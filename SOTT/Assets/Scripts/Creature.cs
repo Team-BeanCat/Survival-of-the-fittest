@@ -9,7 +9,6 @@ public class Creature : MonoBehaviour
     float maxhealth = 100f;
     float age = 0f;
     float hunger = 100f;
-
     int segments = 50; 
 
     public CreatureStats creatureStats;
@@ -42,6 +41,10 @@ public class Creature : MonoBehaviour
     void Update()
     {
 
+        if(foodSourceInRange() && hunger <= 80f) // if food source in range and hungry
+        {
+            GetNearestFood();
+        }
 
         if (hunger >= 50f) //if hunger is large enough then find a mate
         {
@@ -74,7 +77,7 @@ public class Creature : MonoBehaviour
 
 
 
-    bool foodSourceInRange(float range) // checks whether the nearest food source is in range
+    bool foodSourceInRange() // checks whether the nearest food source is in range
     {
         if (Vector3.Distance(GetNearestFood().transform.position, transform.position) < creatureStats._sight)
         {

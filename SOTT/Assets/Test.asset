@@ -12,3 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70a602fcadacdd44d9afb94037c62960, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
+  _maxhealth: 100
+  _speed: 10
+  _age: 0
+  _aggrorange: 0
+  _defence: 0
+  _attack: 0
+  _reproductiveUrge: 0
+  _sight: 10

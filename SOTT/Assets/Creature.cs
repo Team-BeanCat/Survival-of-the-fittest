@@ -10,9 +10,7 @@ public class Creature : MonoBehaviour
     float age = 0f;
     float hunger = 100f;
 
-    int segments = 50;
-    [Range(0, 100)]
-    public float range = 10;
+    int segments = 50; 
 
     public CreatureStats creatureStats;
 
@@ -78,7 +76,7 @@ public class Creature : MonoBehaviour
 
     bool foodSourceInRange(float range) // checks whether the nearest food source is in range
     {
-        if (Vector3.Distance(GetNearestFood().transform.position, transform.position) < range)
+        if (Vector3.Distance(GetNearestFood().transform.position, transform.position) < creatureStats._sight)
         {
             return true;
         }
@@ -128,8 +126,8 @@ public class Creature : MonoBehaviour
 
         for (int i = 0; i < (segments + 1); i++)
         {
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * range;
-            z = Mathf.Cos(Mathf.Deg2Rad * angle) * range;
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * creatureStats._sight;
+            z = Mathf.Cos(Mathf.Deg2Rad * angle) * creatureStats._sight;
 
             line.SetPosition(i, new Vector3(x, 0, z));
 

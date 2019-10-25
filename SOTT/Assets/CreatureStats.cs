@@ -12,15 +12,15 @@ public class CreatureStats : ScriptableObject
 
     List<Creature> _instances = new List<Creature>(); //All the creatures of that species
 
-    float _maxhealth = 100f;
-    float _speed = 10f;
+    public float _maxhealth = 100f;
+    public float _speed = 10f;
     [Range(0, 1)] float _hunger = 0f;
-    float _age = 0;
-    float _aggrorange;
-    float _defence;
-    float _attack;
-    float _reproductiveUrge;
-    float _sight;
+    public float _age = 0;
+    public float _aggrorange;
+    public float _defence;
+    public float _attack;
+    public float _reproductiveUrge;
+    public float _sight;
     /*
     public GameObject GiveBirth()
     {

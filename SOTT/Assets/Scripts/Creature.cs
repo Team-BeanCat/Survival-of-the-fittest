@@ -15,7 +15,7 @@ public class Creature : MonoBehaviour
     public CreatureStats creatureStats;
 
     public GameObject[] FoodsObj;
-    public float[] FoodDist;
+    public List<float> FoodDist = new List<float>();
 
     public FoodSource targetFood;
 
@@ -88,24 +88,23 @@ public class Creature : MonoBehaviour
     private FoodSource GetNearestFood() // finds the nearest object with tag food and returns it
     {
 
-        FoodsObj = GameObject.FindGameObjectsWithTag("Food");
-
-        FoodDist = FoodsObj.Length; 
+        FoodsObj = GameObject.FindGameObjectsWithTag("Food"); 
 
         for (int i = 0; i < FoodsObj.Length; i++)
         {
-            FoodDist[i] = Vector3.Distance(FoodsObj[i].transform.position, transform.position);
+            FoodDist.Add(Vector3.Distance(FoodsObj[i].transform.position, transform.position));
         }
         targetFood = FoodsObj[MinDistance(FoodDist)].GetComponent<FoodSource>();
+        FoodDist.Clear(); //Wipe the list clean
         return targetFood;
 
     }
     
-    private int MinDistance(float[] Dist) // takes an array and returns the location of that number
+    private int MinDistance(List<float> Dist) // takes an array and returns the location of that number
     {
         float min = Dist[0];
         int minLoc = 0;
-        for (int i = 0; i < Dist.Length; i++)
+        for (int i = 0; i < Dist.Count; i++)
         {
             if (min > Dist[i])
             {

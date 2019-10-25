@@ -14,16 +14,14 @@ public class CreatureStats : ScriptableObject
 
     public float _maxhealth = 100f;
     public float _speed = 10f;
-
-    [Range(0, 1)]
-    public float _hunger = 0f;
+    public DietType _dietLock = DietType.Omnivore;
 
     public float _age = 0;
     public float _aggrorange;
     public float _defence;
     public float _attack;
-    public float _reproductiveUrge;
-    public float _sight;
+    public float _reproductiveUrge = 0.3f;
+    public float _sight = 5;
     /*
     public GameObject GiveBirth()
     {

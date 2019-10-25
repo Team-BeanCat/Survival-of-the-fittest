@@ -1,36 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI; //For Navmesh
 
 public class Creature : MonoBehaviour
-{ 
-    CreatureStats _species;
-    float health = 100f;
-    float maxhealth = 100f;
-    float age = 0f;
-    float hunger = 100f;
+{
+    //What action the creature is currently taking
+    enum State
+    {
+        FoodSearch, Idle, MateSearch, WaterSearch
+    }
 
-    int segments = 50; 
-
-    public CreatureStats creatureStats;
-
-    public GameObject[] FoodsObj;
-    public List<float> FoodDist = new List<float>();
-
-    public FoodSource targetFood;
-
+    public FoodSource[] _allFood;
+    public List<float> _foodDist = new List<float>();
+    public FoodSource targetFood; //Food Currently being Pursued
     public bool showRanges; // render the sight range of creature
+    public CreatureStats _creatureStats;
+    [Range(0, 1)]
+    public float _hunger = 0f;
 
-    LineRenderer line; // line renderer for 
+    [SerializeField] private State _currentState = State.Idle;
+    private float _health = 100f;
+    private float _maxhealth = 100f;
+    private float _age = 0f;
+    
+    private int _segments = 50; //Segments for sight field line
+    private LineRenderer line; // line renderer for 
+    private NavMeshAgent _agent; //Nav mesh agent
+    Vector3 newDest = new Vector3();
 
     void Start()
     {
 
         //Line renderer for displaying sight range
         line = gameObject.GetComponent<LineRenderer>();
-        line.SetVertexCount(segments + 1);
+        line.positionCount =_segments + 1;
         line.useWorldSpace = false;
         CreatePoints();
+        if (showRanges) //if show ranges box ticked then enable line renderer
+        {
+            CreatePoints();
+        }
+        line.enabled = showRanges;
+        _agent = GetComponent<NavMeshAgent>();
     }
 
 
@@ -41,23 +53,56 @@ public class Creature : MonoBehaviour
 
     void Update()
     {
+        //if (hunger >= 50f) //if hunger is large enough then find a mate
+        //{
+        //    mate();
+        //}
 
-
-        if (hunger >= 50f) //if hunger is large enough then find a mate
+        //If The Hunger is below 30% then go eat
+        if (_hunger < 0.30)
         {
-            mate();
+            Debug.Log(gameObject + " Is hungry");
+            _currentState = State.FoodSearch; //Set the state to searching for food
+
+            //If the creature has found food
+            if (foodSourceInRange() == true)
+            {
+                Debug.Log("Found Food!");
+                Vector3 FoodLocation = GetNearestFood().transform.position;
+                //Check if the nearest food source is within eating range
+                if (Vector3.Distance(FoodLocation, transform.position) <= 1f)
+                {
+                    Debug.Log("Eating Food");
+                    GetNearestFood().Consume(this); //Eat the food
+                }
+                else
+                {
+                    //Go towards it
+                    _agent.SetDestination(FoodLocation); //Find the nearest food (will be within range) and head towards it 
+                }
+            }
+            
+            else if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
+            {
+                Debug.Log("Searching");
+                newDest = RandomNavSphere(transform.position, _creatureStats._sight, LayerMask.NameToLayer("Default"));
+                Debug.Log("Heading To " + newDest);
+
+                //Set that as the destination for the Agent
+                _agent.SetDestination(newDest);
+
+            }
+            //Debug.Log(Vector3.Distance(_agent.destination, transform.position));
+
         }
 
-        if (health >= maxhealth/2) // if above 50% health attack
+        //If above 50% health attack and is either omnivorou or carnivorous
+        if (_health >= _maxhealth/2 && _creatureStats._dietLock == CreatureStats.DietType.Carnivore || _creatureStats._dietLock == CreatureStats.DietType.Omnivore) 
         {
             //attack
         }
 
-        if (showRanges) //if show ranges box ticked then enable line renderer
-        {
-            CreatePoints();
-        }
-        line.enabled = showRanges;
+        
     }
 
 
@@ -67,20 +112,23 @@ public class Creature : MonoBehaviour
         
     }
 
-    public GameObject findMate() // find the nearest mate then return it as a gameObject
+    public Creature findMate() // find the nearest mate then return it as a gameObject
     {
         return null;
     }
 
 
 
-    bool foodSourceInRange(float range) // checks whether the nearest food source is in range
+    bool foodSourceInRange() // checks whether the nearest food source is in range
     {
-        if (Vector3.Distance(GetNearestFood().transform.position, transform.position) < creatureStats._sight)
+        if (Vector3.Distance(GetNearestFood().transform.position, transform.position) <= _creatureStats._sight)
         {
             return true;
         }
-        else return false;
+        else
+        {
+            return false;
+        }
         
     }
 
@@ -88,14 +136,14 @@ public class Creature : MonoBehaviour
     private FoodSource GetNearestFood() // finds the nearest object with tag food and returns it
     {
 
-        FoodsObj = GameObject.FindGameObjectsWithTag("Food"); 
+        _allFood = FindObjectsOfType<FoodSource>();
 
-        for (int i = 0; i < FoodsObj.Length; i++)
+        for (int i = 0; i < _allFood.Length; i++)
         {
-            FoodDist.Add(Vector3.Distance(FoodsObj[i].transform.position, transform.position));
+            _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
         }
-        targetFood = FoodsObj[MinDistance(FoodDist)].GetComponent<FoodSource>();
-        FoodDist.Clear(); //Wipe the list clean
+        targetFood = _allFood[MinDistance(_foodDist)].GetComponent<FoodSource>();
+        _foodDist.Clear(); //Wipe the list clean
         return targetFood;
 
     }
@@ -122,14 +170,28 @@ public class Creature : MonoBehaviour
 
         float angle = 20f;
 
-        for (int i = 0; i < (segments + 1); i++)
+        for (int i = 0; i < (_segments + 1); i++)
         {
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * creatureStats._sight;
-            z = Mathf.Cos(Mathf.Deg2Rad * angle) * creatureStats._sight;
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * _creatureStats._sight;
+            z = Mathf.Cos(Mathf.Deg2Rad * angle) * _creatureStats._sight;
 
             line.SetPosition(i, new Vector3(x, 0, z));
 
-            angle += (360f / segments);
+            angle += (360f / _segments);
         }
+    }
+
+    //Generate wander destination
+    public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
+    {
+        Vector3 randDirection = Random.insideUnitSphere * dist;
+
+        randDirection += origin;
+
+        NavMeshHit navHit;
+
+        NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
+
+        return navHit.position;
     }
 }

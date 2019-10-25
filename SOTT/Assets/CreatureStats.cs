@@ -20,11 +20,12 @@ public class CreatureStats : ScriptableObject
     float _defence;
     float _attack;
     float _reproductiveUrge;
-
+    float _sight;
+    /*
     public GameObject GiveBirth()
     {
 
-    }
+    }*/
 
     public bool IsExtinct()
     {

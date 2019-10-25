@@ -222,11 +222,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 351135421}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e900a2be5e7727e47b1c412349fe1174, type: 3}
+  m_Script: {fileID: 11500000, guid: 5202fa02474f2634b8b7a74173d5696a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nutritionalValue: 0.3
-  _serves: 3
 --- !u!1 &995263987
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,22 +429,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1741881871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d0f49060e34c144d97d0f3b9a2af89e, type: 3}
+  m_Script: {fileID: 11500000, guid: 09ed10c214af2da4cb666a9524d50cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _species: {fileID: 0}
-  health: 100
-  maxhealth: 100
-  age: 0
-  hunger: 100
-  segments: 50
-  range: 10
   creatureStats: {fileID: 11400000, guid: 095e0ff856e2dbb4ca3a2c47717335ad, type: 2}
   FoodsObj: []
   FoodDist: []
   targetFood: {fileID: 0}
   showRanges: 0
-  line: {fileID: 0}
 --- !u!65 &1741881873
 BoxCollider:
   m_ObjectHideFlags: 0

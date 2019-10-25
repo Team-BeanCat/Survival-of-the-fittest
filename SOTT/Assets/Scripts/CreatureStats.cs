@@ -14,7 +14,7 @@ public class CreatureStats : ScriptableObject
 
     public float _maxhealth = 100f;
     public float _speed = 10f;
-    [Range(0, 1)] float _hunger = 0f;
+    public [Range(0, 1)] float _hunger = 0f;
     public float _age = 0;
     public float _aggrorange;
     public float _defence;

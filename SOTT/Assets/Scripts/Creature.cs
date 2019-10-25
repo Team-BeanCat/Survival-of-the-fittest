@@ -90,7 +90,7 @@ public class Creature : MonoBehaviour
 
         FoodsObj = GameObject.FindGameObjectsWithTag("Food");
 
-        FoodDist = new float[FoodsObj.Length]; 
+        FoodDist = FoodsObj.Length; 
 
         for (int i = 0; i < FoodsObj.Length; i++)
         {

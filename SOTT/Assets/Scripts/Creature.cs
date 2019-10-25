@@ -118,7 +118,6 @@ public class Creature : MonoBehaviour
     void CreatePoints() // renders the range
     {
         float x;
-        float y;
         float z;
 
         float angle = 20f;

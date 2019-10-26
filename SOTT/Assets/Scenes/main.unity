@@ -539,7 +539,7 @@ PrefabInstance:
     - target: {fileID: 7214691631064432153, guid: bd38b124f6560dd429aa3d1299febd02,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.18
+      value: -0.012
       objectReference: {fileID: 0}
     - target: {fileID: 7214691631064432153, guid: bd38b124f6560dd429aa3d1299febd02,
         type: 3}
@@ -648,7 +648,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: df6ff8cda42fa4447960b67e63a7a5aa, type: 2}
 --- !u!4 &1702535706
 Transform:
   m_ObjectHideFlags: 0
@@ -880,6 +880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Tree: {fileID: 0}
+  Floor: {fileID: 0}
   numTrees: 0
 --- !u!1001 &4057160780598882049
 PrefabInstance:

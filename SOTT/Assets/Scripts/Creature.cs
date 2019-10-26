@@ -58,8 +58,8 @@ public class Creature : MonoBehaviour
         //    mate();
         //}
 
-        //If The Hunger is below 30% then go eat
-        if (_hunger < 0.30)
+        //If The Hunger is below 75% then go eat
+        if (_hunger < 0.75)
         {
             Debug.Log(gameObject + " Is hungry");
             _currentState = State.FoodSearch; //Set the state to searching for food

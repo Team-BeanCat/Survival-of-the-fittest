@@ -20,4 +20,4 @@ MonoBehaviour:
   _defence: 0
   _attack: 0
   _reproductiveUrge: 0
-  _sight: 10
+  _sight: 5

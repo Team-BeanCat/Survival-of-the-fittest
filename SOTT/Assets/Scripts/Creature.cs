@@ -74,7 +74,7 @@ public class Creature : MonoBehaviour
                 NavMeshHit hit;
                 NavMesh.SamplePosition(FoodLocation, out hit, 5f, 1 << NavMesh.GetAreaFromName("Walkable"));
                 Debug.Log(hit.position);
-                if (Vector3.Distance(hit.position, transform.position) < 5)
+                if (Vector3.Distance(hit.position, transform.position) < 2)
                 {
                     Debug.Log("Eating Food");
                     GetNearestFood().Consume(this); //Eat the food
@@ -216,11 +216,11 @@ public class Creature : MonoBehaviour
 
         randDirection += origin;
 
-        //NavMeshHit navHit;
+        NavMeshHit navHit;
 
-        //NavMesh.SamplePosition(randDirection, out navHit, 2, layermask);
+        NavMesh.SamplePosition(randDirection, out navHit, 2, layermask);
 
-        //return navHit.position;
-        return randDirection;
+        return navHit.position;
+        //return randDirection;
     }
 }

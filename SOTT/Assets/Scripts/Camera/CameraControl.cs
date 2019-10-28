@@ -9,6 +9,7 @@ public class CameraControl : MonoBehaviour
     public float m_MinSize = 6.5f;                  // The smallest orthographic size the camera can be.
     /*[HideInInspector]*/ public Transform[] m_Targets; // All the targets the camera needs to encompass.
     public GameObject creatureParent;
+    public Transform camera;
 
 
     private Camera m_Camera;                        // Used for referencing the camera.
@@ -95,7 +96,8 @@ public class CameraControl : MonoBehaviour
     {
         // Find the required size based on the desired position and smoothly transition to that size.
         float requiredSize = FindRequiredSize();
-        m_Camera.orthographicSize = Mathf.SmoothDamp(m_Camera.orthographicSize, requiredSize, ref m_ZoomSpeed, m_DampTime);
+        
+        m_Camera.fieldOfView = Mathf.SmoothDamp(m_Camera.fieldOfView, ((requiredSize*10)/2)+10, ref m_ZoomSpeed, m_DampTime);
     }
 
 
@@ -132,7 +134,6 @@ public class CameraControl : MonoBehaviour
 
         // Make sure the camera's size isn't below the minimum.
         size = Mathf.Max(size, m_MinSize);
-
         return size;
     }
 

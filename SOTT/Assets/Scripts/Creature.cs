@@ -8,7 +8,7 @@ public class Creature : MonoBehaviour
     //What action the creature is currently taking
     enum State
     {
-        FoodSearch, Idle, MateSearch, WaterSearch
+        FoodSearch, Idle, MateSearch, WaterSearch, ContinuingTheBloodLine
     }
 
     public FoodSource[] _allFood;

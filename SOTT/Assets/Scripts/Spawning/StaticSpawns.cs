@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Spawns : MonoBehaviour
+public class StaticSpawns : MonoBehaviour
 {
     public GameObject Tree;
     public GameObject Rock;
@@ -33,6 +33,7 @@ public class Spawns : MonoBehaviour
             float zInst = Random.Range(-((z / 2) - 5), (z / 2) - 5);
             GameObject TempTree = Instantiate(Tree, new Vector3(xInst, -1, zInst), Quaternion.Euler(0f, Random.Range(0f, 359f), 0f));
             TempTree.transform.parent = FoodParent.transform;
+            TempTree.name = "Tree" + (i + 1);
         }
         for (int i = 0; i <= numRocks; i++)
         {

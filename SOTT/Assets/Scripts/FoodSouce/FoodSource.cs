@@ -25,19 +25,19 @@ public class FoodSource : MonoBehaviour
             if (consumer._creatureStats._dietLock == CreatureStats.DietType.Omnivore)
             {
                 consumer._hunger += (_foodStats._nutritionalValue / 2); //Award Half Value
-                Debug.Log(_foodStats._type + " eaten by Omnivore, Half Value");
+                Debug.Log(gameObject.name + " (" + _foodStats._type + ") eaten by Omnivore, Half Value");
                 OnEat();
             }
             else if (consumer._creatureStats._dietLock == CreatureStats.DietType.Carnivore && _foodStats._type == Food.FoodType.Meat)
             {
                 consumer._hunger += _foodStats._nutritionalValue; //Award The Full Value
-                Debug.Log(_foodStats._type + " eaten by Carnivore, Full Value");
+                Debug.Log(gameObject.name + " (" + _foodStats._type + ") eaten by Carnivore, Full Value");
                 OnEat();
             }
             else if (consumer._creatureStats._dietLock == CreatureStats.DietType.Herbivore && _foodStats._type == Food.FoodType.Plant)
             {
                 consumer._hunger += _foodStats._nutritionalValue; //Award the full value
-                Debug.Log(_foodStats._type + " eaten by Herbivore, Full Value");
+                Debug.Log(gameObject.name + " (" + _foodStats._type + ") eaten by Herbivore, Full Value");
                 OnEat();
             }
             else

@@ -21,6 +21,14 @@ public class CameraControl : MonoBehaviour
     private void Awake()
     {
         m_Camera = GetComponentInChildren<Camera>();
+
+        // Get all the creatures in the heirarchy and store them as targets
+        creatures.Clear();
+        for (int i = 0; i < creatureParent.transform.childCount; i++)
+        {
+            creatures.Add(creatureParent.transform.GetChild(i));
+        }
+        m_Targets = creatures.ToArray();
     }
 
 
@@ -35,8 +43,8 @@ public class CameraControl : MonoBehaviour
     }
     void Update()
     {
+        // Get all the creatures in the heirarchy and store them as targets
         creatures.Clear();
-        Debug.Log("running");
         for (int i = 0; i < creatureParent.transform.childCount; i++)
         {
             creatures.Add(creatureParent.transform.GetChild(i));

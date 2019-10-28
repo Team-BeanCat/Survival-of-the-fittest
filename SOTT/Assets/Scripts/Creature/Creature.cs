@@ -61,7 +61,7 @@ public class Creature : MonoBehaviour
         //If The Hunger is below 75% then go eat
         if (_hunger < 0.75)
         {
-            Debug.Log(gameObject + " Is hungry");
+            //Debug.Log(gameObject + " Is hungry");
             _currentState = State.FoodSearch; //Set the state to searching for food
 
             //If the creature has found food
@@ -73,7 +73,7 @@ public class Creature : MonoBehaviour
 
                 NavMeshHit hit;
                 NavMesh.SamplePosition(FoodLocation, out hit, 5f, 1 << NavMesh.GetAreaFromName("Walkable"));
-                Debug.Log(hit.position);
+                //Debug.Log(hit.position);
                 if (Vector3.Distance(hit.position, transform.position) < 2)
                 {
                     //Debug.Log("Eating Food");
@@ -122,7 +122,8 @@ public class Creature : MonoBehaviour
 
     bool foodSourceInRange() // checks whether the nearest food source is in range
     {
-        if (Vector3.Distance(GetNearestFood().transform.position, transform.position) <= _creatureStats._sight)
+        FoodSource nearest = GetNearestFood();
+        if (Vector3.Distance(nearest.transform.position, transform.position) <= _creatureStats._sight && nearest._servesRemaining > 0)
         {
             return true;
         }

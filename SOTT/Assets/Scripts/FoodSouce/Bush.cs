@@ -21,7 +21,7 @@ public class Bush : FoodSource
         base.OnEat();
         _berries.SetActive(false);
         _regrowTime = Time.time + Random.Range(_regrowMin, _regrowMax); //Figure out when the berrie will grow back
-        Debug.Log("Will be fully grown at " + _regrowTime);
+        Debug.Log(gameObject.name + " Will be fully grown at " + _regrowTime);
     }
 
     private void Update()

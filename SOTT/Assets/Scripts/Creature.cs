@@ -113,14 +113,7 @@ public class Creature : MonoBehaviour
         
     }
 
-
-
-    public void mate() // ...
-    {
-        
-    }
-
-    public Creature findMate() // find the nearest mate then return it as a gameObject
+    public Creature findNearestMate() // find the nearest mate then return it as a gameObject
     {
         return null;
     }
@@ -151,14 +144,14 @@ public class Creature : MonoBehaviour
             //FOOD TYPE FILTERING - UBERJANK (try not to think about it too hard)
             if (_allFood[i]._servesRemaining > 0 && _creatureStats._dietLock == CreatureStats.DietType.Omnivore) //If this creature is an omnivore then just go for it!
             {
-                Debug.Log("foodtype");
+                //Debug.Log("foodtype");
                 _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
             }
 
             //Carnivore
             else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Meat && _creatureStats._dietLock == CreatureStats.DietType.Carnivore)
             { 
-                Debug.Log("foodtype");
+                //Debug.Log("foodtype");
                 _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
             }
 
@@ -166,7 +159,7 @@ public class Creature : MonoBehaviour
             else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Plant && _creatureStats._dietLock == CreatureStats.DietType.Herbivore)
             {
                 //Found possible food
-                Debug.Log("foodtype");
+                //Debug.Log("foodtype");
                 _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
             }
         }

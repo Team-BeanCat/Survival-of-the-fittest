@@ -67,7 +67,7 @@ public class Creature : MonoBehaviour
             //If the creature has found food
             if (foodSourceInRange() == true)
             {
-                Debug.Log("Found Food!");
+                //Debug.Log("Found Food!");
                 Vector3 FoodLocation = GetNearestFood().transform.position;
                 //Check if the nearest food source is within eating range
 
@@ -76,7 +76,7 @@ public class Creature : MonoBehaviour
                 Debug.Log(hit.position);
                 if (Vector3.Distance(hit.position, transform.position) < 2)
                 {
-                    Debug.Log("Eating Food");
+                    //Debug.Log("Eating Food");
                     GetNearestFood().Consume(this); //Eat the food
                 }
                 else
@@ -88,9 +88,9 @@ public class Creature : MonoBehaviour
             
             else if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
             {
-                Debug.Log("Searching");
+                //Debug.Log("Searching");
                 newDest = RandomNavSphere(transform.position, _creatureStats._sight, LayerMask.NameToLayer("Walkable")); //Pick a random point within the sight range
-                Debug.Log("Heading To " + newDest);
+                //Debug.Log("Heading To " + newDest);
 
                 //Set that as the destination for the Agent
                 _agent.SetDestination(newDest);
@@ -151,14 +151,14 @@ public class Creature : MonoBehaviour
             //FOOD TYPE FILTERING - UBERJANK (try not to think about it too hard)
             if (_allFood[i]._servesRemaining > 0 && _creatureStats._dietLock == CreatureStats.DietType.Omnivore) //If this creature is an omnivore then just go for it!
             {
-                Debug.Log("foodtype");
+                //Debug.Log("foodtype");
                 _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
             }
 
             //Carnivore
             else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Meat && _creatureStats._dietLock == CreatureStats.DietType.Carnivore)
             { 
-                Debug.Log("foodtype");
+                //Debug.Log("foodtype");
                 _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
             }
 
@@ -166,7 +166,7 @@ public class Creature : MonoBehaviour
             else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Plant && _creatureStats._dietLock == CreatureStats.DietType.Herbivore)
             {
                 //Found possible food
-                Debug.Log("foodtype");
+                //Debug.Log("foodtype");
                 _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
             }
         }

@@ -16,10 +16,10 @@ GameObject:
   - component: {fileID: 5859848911573589686}
   - component: {fileID: 5859848911573589685}
   - component: {fileID: 5859848911573589684}
-  - component: {fileID: -4975565659517217555}
+  - component: {fileID: 798084009081316643}
   m_Layer: 0
   m_Name: Animal
-  m_TagString: Untagged
+  m_TagString: creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,7 +121,7 @@ MonoBehaviour:
   _allFood: []
   _foodDist: []
   targetFood: {fileID: 0}
-  showRanges: 1
+  showRanges: 0
   _creatureStats: {fileID: 11400000, guid: 095e0ff856e2dbb4ca3a2c47717335ad, type: 2}
   _hunger: 0.07
   _currentState: 1
@@ -299,19 +299,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!208 &-4975565659517217555
-NavMeshObstacle:
+--- !u!114 &798084009081316643
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5859848911573589691}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 1
-  m_CarveOnlyStationary: 0
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff

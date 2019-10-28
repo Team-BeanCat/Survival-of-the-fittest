@@ -8,7 +8,7 @@ public class Creature : MonoBehaviour
     //What action the creature is currently taking
     enum State
     {
-        FoodSearch, Idle, MateSearch, WaterSearch
+        FoodSearch, Idle, MateSearch, WaterSearch, ContinuingTheBloodLine
     }
 
     public FoodSource[] _allFood;
@@ -67,7 +67,7 @@ public class Creature : MonoBehaviour
             //If the creature has found food
             if (foodSourceInRange() == true)
             {
-                Debug.Log("Found Food!");
+                //Debug.Log("Found Food!");
                 Vector3 FoodLocation = GetNearestFood().transform.position;
                 //Check if the nearest food source is within eating range
 
@@ -76,7 +76,7 @@ public class Creature : MonoBehaviour
                 Debug.Log(hit.position);
                 if (Vector3.Distance(hit.position, transform.position) < 2)
                 {
-                    Debug.Log("Eating Food");
+                    //Debug.Log("Eating Food");
                     GetNearestFood().Consume(this); //Eat the food
                 }
                 else
@@ -88,9 +88,9 @@ public class Creature : MonoBehaviour
             
             else if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
             {
-                Debug.Log("Searching");
+                //Debug.Log("Searching");
                 newDest = RandomNavSphere(transform.position, _creatureStats._sight, LayerMask.NameToLayer("Walkable")); //Pick a random point within the sight range
-                Debug.Log("Heading To " + newDest);
+                //Debug.Log("Heading To " + newDest);
 
                 //Set that as the destination for the Agent
                 _agent.SetDestination(newDest);

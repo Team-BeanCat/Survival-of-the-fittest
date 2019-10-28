@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class CameraControl : MonoBehaviour
 {
@@ -6,12 +8,14 @@ public class CameraControl : MonoBehaviour
     public float m_ScreenEdgeBuffer = 4f;           // Space between the top/bottom most target and the screen edge.
     public float m_MinSize = 6.5f;                  // The smallest orthographic size the camera can be.
     /*[HideInInspector]*/ public Transform[] m_Targets; // All the targets the camera needs to encompass.
+    public GameObject creatureParent;
 
 
     private Camera m_Camera;                        // Used for referencing the camera.
     private float m_ZoomSpeed;                      // Reference speed for the smooth damping of the orthographic size.
     private Vector3 m_MoveVelocity;                 // Reference velocity for the smooth damping of the position.
     private Vector3 m_DesiredPosition;              // The position the camera is moving towards.
+    public List<Transform> creatures;
 
 
     private void Awake()
@@ -27,8 +31,18 @@ public class CameraControl : MonoBehaviour
 
         // Change the size of the camera based.
         Zoom();
-    }
 
+    }
+    void Update()
+    {
+        creatures.Clear();
+        Debug.Log("running");
+        for (int i = 0; i < creatureParent.transform.childCount; i++)
+        {
+            creatures.Add(creatureParent.transform.GetChild(i));
+        }
+        m_Targets = creatures.ToArray();
+    }
 
     private void Move()
     {

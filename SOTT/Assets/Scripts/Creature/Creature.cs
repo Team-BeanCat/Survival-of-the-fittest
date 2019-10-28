@@ -31,7 +31,7 @@ public class Creature : MonoBehaviour
 
     void Start()
     {
-
+        Time.timeScale = 0.25f;
         //Line renderer for displaying sight range
         line = gameObject.GetComponent<LineRenderer>();
         line.positionCount =_segments + 1;
@@ -97,6 +97,11 @@ public class Creature : MonoBehaviour
 
             }
             //Debug.Log(Vector3.Distance(_agent.destination, transform.position));
+            if (_hunger<0.05f)
+            {
+                Debug.Log(gameObject + " has died");
+                Destroy(gameObject);
+            }
 
         }
         else
@@ -185,13 +190,14 @@ public class Creature : MonoBehaviour
         return minLoc; 
 
     }
+
     void CreatePoints() // renders the range
     {
         float x;
         float z;
 
         float angle = 20f;
-
+        //it works, just don't think about it to much
         for (int i = 0; i < (_segments + 1); i++)
         {
             x = Mathf.Sin(Mathf.Deg2Rad * angle) * _creatureStats._sight;

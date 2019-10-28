@@ -157,8 +157,8 @@ MonoBehaviour:
   Floor: {fileID: 1760033142}
   x: 50
   z: 50
-  numTrees: 20
-  numRocks: 20
+  numTrees: 10
+  numRocks: 10
 --- !u!4 &230928449
 Transform:
   m_ObjectHideFlags: 0
@@ -339,7 +339,7 @@ PrefabInstance:
     - target: {fileID: 1961594094458784568, guid: 73c8767b325241e45a4ef75113aefd36,
         type: 3}
       propertyPath: orthographic
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1961594094458784574, guid: 73c8767b325241e45a4ef75113aefd36, type: 3}

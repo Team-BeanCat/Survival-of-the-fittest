@@ -29,9 +29,10 @@ public class Creature : MonoBehaviour
     private NavMeshAgent _agent; //Nav mesh agent
     Vector3 newDest = new Vector3();
 
+    public List<FoodSource> knownFood;
+
     void Start()
     {
-        Time.timeScale = 0.25f;
         //Line renderer for displaying sight range
         line = gameObject.GetComponent<LineRenderer>();
         line.positionCount =_segments + 1;
@@ -77,6 +78,10 @@ public class Creature : MonoBehaviour
                 if (Vector3.Distance(hit.position, transform.position) < 2)
                 {
                     //Debug.Log("Eating Food");
+                    if (!(knownFood.Contains(GetNearestFood())))
+                    {
+                        knownFood.Add(GetNearestFood());
+                    }
                     GetNearestFood().Consume(this); //Eat the food
                 }
                 else

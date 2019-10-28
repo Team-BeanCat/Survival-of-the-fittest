@@ -38,7 +38,7 @@ public class Spawns : MonoBehaviour
         {
             float xInst = Random.Range(-((x / 2) - 5), (x / 2) - 5);
             float zInst = Random.Range(-((z / 2) - 5), (z / 2) - 5);
-            GameObject TempRock = Instantiate(Rock, new Vector3(xInst, -1, zInst), Quaternion.Euler(0f, Random.Range(0f, 359f), 0f));
+            GameObject TempRock = Instantiate(Rock, new Vector3(xInst, -1, zInst), Quaternion.Euler(Random.Range(0f, 359f), Random.Range(0f, 359f), Random.Range(0f, 359f)));
             TempRock.transform.parent = RockParent.transform;
         }
     }

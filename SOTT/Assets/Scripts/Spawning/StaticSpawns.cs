@@ -27,7 +27,7 @@ public class StaticSpawns : MonoBehaviour
         */
 
 
-        for (int i = 0; i <= numTrees; i++)
+        for (int i = 0; i < numTrees; i++)
         {
             float xInst = Random.Range(-((x / 2) - 5), (x / 2) - 5);
             float zInst = Random.Range(-((z / 2) - 5), (z / 2) - 5);
@@ -35,7 +35,7 @@ public class StaticSpawns : MonoBehaviour
             TempTree.transform.parent = FoodParent.transform;
             TempTree.name = "Tree" + (i + 1);
         }
-        for (int i = 0; i <= numRocks; i++)
+        for (int i = 0; i < numRocks; i++)
         {
             float xInst = Random.Range(-((x / 2) - 5), (x / 2) - 5);
             float zInst = Random.Range(-((z / 2) - 5), (z / 2) - 5);

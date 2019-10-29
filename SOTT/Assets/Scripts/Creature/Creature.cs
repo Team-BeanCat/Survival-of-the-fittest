@@ -52,12 +52,19 @@ public class Creature : MonoBehaviour
         
     }
 
+    void FixedUpdate()
+    {
+        _hunger -= 0.00001f;
+    }
+
     void Update()
     {
         //if (hunger >= 50f) //if hunger is large enough then find a mate
         //{
         //    mate();
         //}
+
+
 
         //If The Hunger is below 75% then go eat
         if (_hunger < 0.75)
@@ -90,7 +97,14 @@ public class Creature : MonoBehaviour
                     _agent.SetDestination(FoodLocation); //Find the nearest food (will be within range) and head towards it 
                 }
             }
-            
+
+            else if (_hunger<0.1f && !foodSourceInRange())
+            {
+                //find nearest known food source and go to it 
+                
+            }
+
+                
             else if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
             {
                 //Debug.Log("Searching");

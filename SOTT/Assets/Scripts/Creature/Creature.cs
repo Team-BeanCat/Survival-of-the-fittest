@@ -16,8 +16,8 @@ public class Creature : MonoBehaviour
     public FoodSource targetFood; //Food Currently being Pursued
     public bool showRanges; // render the sight range of creature
     public CreatureStats _creatureStats;
-    [Range(0, 1)]
-    public float _hunger = 0f;
+    [Range(0, 100f)]
+    public float _sustinance = 100f;
 
     [SerializeField] private State _currentState = State.Idle;
     private float _health = 100f;
@@ -44,7 +44,8 @@ public class Creature : MonoBehaviour
         }
         line.enabled = showRanges;
         _agent = GetComponent<NavMeshAgent>();
-    }
+        _sustinance = 100f;
+}
 
 
     private void Init(float maxhealth)
@@ -54,7 +55,7 @@ public class Creature : MonoBehaviour
 
     void FixedUpdate()
     {
-        _hunger -= 0.00001f;
+        _sustinance -= 0.01f;
     }
 
     void Update()
@@ -67,7 +68,7 @@ public class Creature : MonoBehaviour
 
 
         //If The Hunger is below 75% then go eat
-        if (_hunger < 0.75)
+        if (_sustinance < 75f)
         {
             //Debug.Log(gameObject + " Is hungry");
             _currentState = State.FoodSearch; //Set the state to searching for food
@@ -108,7 +109,8 @@ public class Creature : MonoBehaviour
             else if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
             {
                 //Debug.Log("Searching");
-                newDest = RandomNavSphere(transform.position, _creatureStats._sight, LayerMask.NameToLayer("Walkable")); //Pick a random point within the sight range
+                //Get a random point in a circle with a radius equal to the creature's sight * 2
+                newDest = RandomNavSphere(transform.position, _creatureStats._sight * 2, LayerMask.NameToLayer("Walkable")); //Pick a random point within the sight range
                 //Debug.Log("Heading To " + newDest);
 
                 //Set that as the destination for the Agent
@@ -116,10 +118,10 @@ public class Creature : MonoBehaviour
 
             }
             //Debug.Log(Vector3.Distance(_agent.destination, transform.position));
-            if (_hunger<0.05f)
+            if (_sustinance<5f)
             {
                 Debug.Log(gameObject + " has died");
-                Destroy(gameObject);
+                //Destroy(gameObject);
             }
 
         }

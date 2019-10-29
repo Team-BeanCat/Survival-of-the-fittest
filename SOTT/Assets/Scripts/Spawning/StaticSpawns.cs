@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class StaticSpawns : MonoBehaviour
 {
@@ -15,7 +16,9 @@ public class StaticSpawns : MonoBehaviour
     public int numTrees;
     [Range(1, 100)]
     public int numRocks;
-
+    private NavMeshHit hit;
+    private bool blocked = false;
+    public Transform target;
 
     void Start()
     {
@@ -37,10 +40,34 @@ public class StaticSpawns : MonoBehaviour
         }
         for (int i = 0; i < numRocks; i++)
         {
+            /*bool ValidSpawn = false;
+            while (!ValidSpawn)
+            {
+                float xInst = Random.Range(-((x / 2) - 5), (x / 2) - 5);
+                float zInst = Random.Range(-((z / 2) - 5), (z / 2) - 5);
+                if (NavMesh.Raycast(new Vector3(0, 50, 0), new Vector3(xInst, -1, zInst), out hit, NavMesh.AllAreas))
+                {
+                    GameObject TempRock = Instantiate(Rock, new Vector3(xInst, -1, zInst), Quaternion.Euler(Random.Range(0f, 359f), Random.Range(0f, 359f), Random.Range(0f, 359f)));
+                    TempRock.transform.parent = RockParent.transform; 
+                    ValidSpawn = true;
+                }
+            }*/
+            
             float xInst = Random.Range(-((x / 2) - 5), (x / 2) - 5);
             float zInst = Random.Range(-((z / 2) - 5), (z / 2) - 5);
             GameObject TempRock = Instantiate(Rock, new Vector3(xInst, -1, zInst), Quaternion.Euler(Random.Range(0f, 359f), Random.Range(0f, 359f), Random.Range(0f, 359f)));
-            TempRock.transform.parent = RockParent.transform;
+            TempRock.transform.parent = RockParent.transform; 
         }
     }
+    void Update()
+    {
+        float xInst = Random.Range(-((x / 2) - 5), (x / 2) - 5);
+        float zInst = Random.Range(-((z / 2) - 5), (z / 2) - 5);
+        NavMeshHit hit;
+        NavMesh.Raycast(new Vector3(0, 50, 0), new Vector3(xInst, -1, zInst), out hit, 1 << NavMesh.GetAreaFromName("Not walkable"));
+        //blocked = Physics.Raycast(new Vector3(0, 50, 0), new Vector3(xInst, -1, zInst), 350f, 8);
+        Debug.DrawLine(new Vector3(0, 50, 0), new Vector3(xInst, -1, zInst), blocked ? Color.red : Color.green);
+        Debug.Log(blocked);            
+    }
 }
+                                                  

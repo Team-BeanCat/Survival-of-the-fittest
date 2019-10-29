@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bush : FoodSource
 {
-    [HideInInspector]
+    //[HideInInspector]
     public GameObject _berries;
     public float _regrowMax = 30;
     public float _regrowMin = 0;
@@ -14,6 +14,7 @@ public class Bush : FoodSource
     private void Start()
     {
         _berries = transform.GetChild(0).gameObject; //Berries :D
+        //_berries.transform.localRotation = Quaternion.Euler(Random.Range(0f, 359f), 0f , Random.Range(0f, 359f));
     }
 
     public override void OnEat()

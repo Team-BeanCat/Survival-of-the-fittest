@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxhealth: 100
   _speed: 10
-  _dietLock: 2
+  _dietLock: 0
   _age: 0
   _aggrorange: 0
   _defence: 0

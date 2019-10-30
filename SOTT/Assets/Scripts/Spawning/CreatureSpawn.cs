@@ -22,9 +22,9 @@ public class CreatureSpawn : MonoBehaviour
             randomDirection += new Vector3(0, 1, 0);
             NavMeshHit navHit;
             NavMesh.SamplePosition(randomDirection, out navHit, x / 2, 1);
-            GameObject TempCreature = Instantiate(creature, new Vector3(navHit.position.x, 1, navHit.position.z), Quaternion.identity);
-            TempCreature.transform.parent = CreatureParent.transform;
-            TempCreature.name = "creature" + (i + 1);
+            GameObject TempRock = Instantiate(creature, new Vector3(navHit.position.x, 1, navHit.position.z), Quaternion.identity);
+            TempRock.transform.parent = CreatureParent.transform;
+            TempRock.name = "creature" + (i + 1);
         }
     }
 }

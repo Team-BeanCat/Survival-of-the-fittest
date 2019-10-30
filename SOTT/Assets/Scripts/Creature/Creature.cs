@@ -44,7 +44,7 @@ public class Creature : MonoBehaviour
         }
         line.enabled = showRanges;
         _agent = GetComponent<NavMeshAgent>();
-        _sustinance = 100f;
+        _sustinance = 80f;
 }
 
 
@@ -55,7 +55,7 @@ public class Creature : MonoBehaviour
 
     void FixedUpdate()
     {
-        _sustinance -= 0.01f;
+        _sustinance -= 0.05f;
     }
 
     void Update()
@@ -83,7 +83,7 @@ public class Creature : MonoBehaviour
                 NavMeshHit hit;
                 NavMesh.SamplePosition(FoodLocation, out hit, 5f, 1 << NavMesh.GetAreaFromName("Walkable"));
                 //Debug.Log(hit.position);
-                if (Vector3.Distance(hit.position, transform.position) < 2)
+                if (Vector3.Distance(hit.position, transform.position) < 3)
                 {
                     //Debug.Log("Eating Food");
                     if (!(knownFood.Contains(GetNearestFood())))
@@ -91,6 +91,8 @@ public class Creature : MonoBehaviour
                         knownFood.Add(GetNearestFood());
                     }
                     GetNearestFood().Consume(this); //Eat the food
+                    targetFood = null;
+                    _agent.SetDestination(transform.position); //Trigger the wander function
                 }
                 else
                 {
@@ -106,7 +108,9 @@ public class Creature : MonoBehaviour
             }
 
               */  
-            else if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
+
+            //Was an else if IF BROKEN CHANGE IT BACK
+            if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
             {
                 //Debug.Log("Searching");
                 //Get a random point in a circle with a radius equal to the creature's sight * 2
@@ -121,7 +125,8 @@ public class Creature : MonoBehaviour
             if (_sustinance<5f)
             {
                 Debug.Log(gameObject + " has died");
-                //Destroy(gameObject);
+                CameraControl._instance.creatures.Remove(transform); //Remove this from the camera controller targets
+                Destroy(gameObject);
             }
 
         }

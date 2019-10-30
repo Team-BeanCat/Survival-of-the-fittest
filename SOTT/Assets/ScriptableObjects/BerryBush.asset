@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ba8d70c0007b8549ae8627de651e863, type: 3}
   m_Name: BerryBush
   m_EditorClassIdentifier: 
-  _nutritionalValue: 0.05
+  _nutritionalValue: 50
   _type: 1
   _serves: 1
   _eatRange: 2

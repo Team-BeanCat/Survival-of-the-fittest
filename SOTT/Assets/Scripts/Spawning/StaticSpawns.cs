@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class StaticSpawns : MonoBehaviour
 {
@@ -15,11 +16,7 @@ public class StaticSpawns : MonoBehaviour
     public int numTrees;
     [Range(1, 100)]
     public int numRocks;
-<<<<<<< Updated upstream
-
-=======
     public Transform target;
->>>>>>> Stashed changes
 
     void Start()
     {
@@ -44,14 +41,6 @@ public class StaticSpawns : MonoBehaviour
         }
         for (int i = 0; i < numRocks; i++)
         {
-<<<<<<< Updated upstream
-            float xInst = Random.Range(-((x / 2) - 5), (x / 2) - 5);
-            float zInst = Random.Range(-((z / 2) - 5), (z / 2) - 5);
-            GameObject TempRock = Instantiate(Rock, new Vector3(xInst, -1, zInst), Quaternion.Euler(Random.Range(0f, 359f), Random.Range(0f, 359f), Random.Range(0f, 359f)));
-            TempRock.transform.parent = RockParent.transform;
-        }
-    }
-=======
             Vector3 randomDirection = Random.insideUnitSphere * x/2;
             randomDirection += new Vector3(0, 1, 0);
             NavMeshHit navHit;
@@ -65,5 +54,4 @@ public class StaticSpawns : MonoBehaviour
     
 
     
->>>>>>> Stashed changes
 }

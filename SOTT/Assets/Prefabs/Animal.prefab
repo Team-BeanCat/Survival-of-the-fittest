@@ -91,7 +91,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5859848911573589691}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -334000983
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
@@ -122,7 +122,7 @@ MonoBehaviour:
   targetFood: {fileID: 0}
   showRanges: 0
   _creatureStats: {fileID: 11400000, guid: 095e0ff856e2dbb4ca3a2c47717335ad, type: 2}
-  _hunger: 0.07
+  _sustinance: 100
   _currentState: 1
   knownFood: []
 --- !u!120 &5859848911573589686

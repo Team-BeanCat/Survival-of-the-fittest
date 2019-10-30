@@ -125,6 +125,7 @@ public class Creature : MonoBehaviour
             if (_sustinance<5f)
             {
                 Debug.Log(gameObject + " has died");
+                CameraControl._instance.creatures.Remove(transform); //Remove this from the camera controller targets
                 Destroy(gameObject);
             }
 

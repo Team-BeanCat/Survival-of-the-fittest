@@ -17,7 +17,7 @@ public class CameraControl : MonoBehaviour
     private Vector3 m_MoveVelocity;                 // Reference velocity for the smooth damping of the position.
     private Vector3 m_DesiredPosition;              // The position the camera is moving towards.
     public List<Transform> creatures;
-
+    public static CameraControl _instance;          //For easy access to instance from other scripts
 
     private void Awake()
     {
@@ -30,8 +30,14 @@ public class CameraControl : MonoBehaviour
             creatures.Add(creatureParent.transform.GetChild(i));
         }
         m_Targets = creatures.ToArray();
+
+        _instance = this;
     }
 
+    private void OnEnable()
+    {
+        _instance = this;
+    }
 
     private void FixedUpdate()
     {

@@ -83,7 +83,7 @@ public class Creature : MonoBehaviour
                 NavMeshHit hit;
                 NavMesh.SamplePosition(FoodLocation, out hit, 5f, 1 << NavMesh.GetAreaFromName("Walkable"));
                 //Debug.Log(hit.position);
-                if (Vector3.Distance(hit.position, transform.position) < 3)
+                if (Vector3.Distance(hit.position, transform.position) < 1.5*GetNearestFood().transform.localScale.x) //Eat range dependant on object size
                 {
                     //Debug.Log("Eating Food");
                     if (!(knownFood.Contains(GetNearestFood())))

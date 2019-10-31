@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class StaticSpawns : MonoBehaviour
+public class ObjectPooler : MonoBehaviour
 {
     [System.Serializable]
     public class pool
@@ -16,7 +16,8 @@ public class StaticSpawns : MonoBehaviour
     public Dictionary<string, Queue<GameObject>> poolDictionary;
     public List<pool> pools;
 
-    public GameObject ObjectStorage;
+    public GameObject Tree;
+    public GameObject Rock;
     public GameObject FoodParent;
     public GameObject RockParent;
     public float x;
@@ -38,20 +39,19 @@ public class StaticSpawns : MonoBehaviour
         {
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
-            for (int i = 0; i < pool.size; i++)
-            {
+            for(int i = 0; i < pool.size; i++)
+			{
                 GameObject obj = Instantiate(pool.prefab);
                 obj.SetActive(false);
-                obj.transform.parent = ObjectStorage.transform;
+                obj.transform.parent = transform;
                 objectPool.Enqueue(obj);
             }
 
             poolDictionary.Add(pool.tag, objectPool);
         }
-        Invoke("spawn", 0.1f);
     }
 
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool (string tag, Vector3 position, Quaternion rotation)
     {
 
         if (!poolDictionary.ContainsKey(tag))
@@ -70,11 +70,14 @@ public class StaticSpawns : MonoBehaviour
 
         return objectToSpawn;
     }
-    
+    private void Update()
+    {
+        SpawnFromPool("Rock", Vector3.zero, Quaternion.identity);
+    }
 
     void spawn()
     {
-
+        
         //It works, That's all that matters
         //Don't spend too long trying to comprehend it
         for (int i = 0; i < numTrees; i++)
@@ -85,9 +88,9 @@ public class StaticSpawns : MonoBehaviour
             NavMesh.SamplePosition(randomDirection, out navHit, x / 2, 1);
             //GameObject TempTree = Instantiate(Tree, new Vector3(navHit.position.x, SpawnOffset, navHit.position.z), Quaternion.Euler(0f, Random.Range(0f, 359f), 0f));
             GameObject TempTree = SpawnFromPool("Tree", new Vector3(navHit.position.x, SpawnOffset, navHit.position.z), Quaternion.Euler(0f, Random.Range(0f, 359f), 0f));
-            TempTree.transform.parent = FoodParent.transform;
-            TempTree.transform.localScale = Vector3.one * Random.Range(0.75f, 2f);
-            TempTree.name = "Tree" + (i + 1);
+            //TempTree.transform.parent = FoodParent.transform;
+            //TempTree.transform.localScale = Vector3.one * Random.Range(0.75f, 2f);
+            //TempTree.name = "Tree" + (i + 1);
         }
         for (int i = 0; i < numRocks; i++)
         {
@@ -105,4 +108,3 @@ public class StaticSpawns : MonoBehaviour
 
 
 }
-                                                  

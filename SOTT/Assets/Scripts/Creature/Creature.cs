@@ -211,7 +211,7 @@ public class Creature : MonoBehaviour
         return minLoc; 
 
     }
-
+    
     void CreatePoints() // renders the range
     {
         float x;

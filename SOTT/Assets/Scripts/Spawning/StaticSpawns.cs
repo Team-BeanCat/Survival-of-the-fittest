@@ -75,7 +75,7 @@ public class StaticSpawns : MonoBehaviour
     }
     
 
-    void spawn()
+    public void spawn()
     {
 
         //It works, That's all that matters

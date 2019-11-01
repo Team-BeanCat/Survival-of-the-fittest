@@ -15,6 +15,8 @@ namespace TerrainGeneration {
         public NavMeshSurface SpawnNavMesh;
         public NavMeshSurface NavMesh;
 
+        public GameObject Spawn;
+
         public int worldSize = 20;
         public float waterDepth = .2f;
         public float edgeDepth = .2f;
@@ -44,6 +46,7 @@ namespace TerrainGeneration {
                 Generate ();
                 NavMesh.BuildNavMesh();
                 SpawnNavMesh.BuildNavMesh();
+                Spawn.GetComponent<StaticSpawns>().spawn();
             } else {
                 if (!Application.isPlaying) {
                     UpdateColours ();

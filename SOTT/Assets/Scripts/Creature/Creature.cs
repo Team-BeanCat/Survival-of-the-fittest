@@ -66,7 +66,7 @@ public class Creature : MonoBehaviour
         //    mate();
         //}
 
-        FindNearestKnownFood();
+        //FindNearestKnownFood();
 
         //If The Hunger is below 75% then go eat
         if (_sustinance < 75f && _sustinance > 20f)
@@ -145,7 +145,7 @@ public class Creature : MonoBehaviour
     {
         return null;
     }
-    
+    /*
     Transform FindNearestKnownFood()
     {
         knownFoodDist.Clear();
@@ -157,7 +157,7 @@ public class Creature : MonoBehaviour
         int Loc = MinDistance(knownFoodDist);
 
         return knownFood[Loc].transform;
-    }
+    }*/
 
     bool foodSourceInRange() // checks whether the nearest food source is in range
     {

@@ -12,7 +12,6 @@ namespace TerrainGeneration {
 
         public bool centralize = true;
 
-        public NavMeshSurface SpawnNavMesh;
         public NavMeshSurface NavMesh;
 
         public GameObject Spawn;
@@ -50,7 +49,6 @@ namespace TerrainGeneration {
                 needsUpdate = false;
                 Generate ();
                 NavMesh.BuildNavMesh();
-                SpawnNavMesh.BuildNavMesh();
                 Spawn.GetComponent<StaticSpawns>().spawn();
             } else {
                 if (!Application.isPlaying) {

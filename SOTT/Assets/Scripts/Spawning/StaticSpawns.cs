@@ -19,8 +19,7 @@ public class StaticSpawns : MonoBehaviour
     public GameObject ObjectStorage;
     public GameObject FoodParent;
     public GameObject RockParent;
-    public float x;
-    public float z;
+    public int size;
     [Range(0, 100)]
     public int numTrees;
     [Range(0, 100)]
@@ -82,10 +81,10 @@ public class StaticSpawns : MonoBehaviour
         //Don't spend too long trying to comprehend it
         for (int i = 0; i < numTrees; i++)
         {
-            Vector3 randomDirection = Random.insideUnitSphere * x / 2;
+            Vector3 randomDirection = Random.insideUnitSphere * size / 2;
             randomDirection += new Vector3(0, 1, 0);
             NavMeshHit navHit;
-            NavMesh.SamplePosition(randomDirection, out navHit, x / 2, 5);
+            NavMesh.SamplePosition(randomDirection, out navHit, size / 2, 5);
             //GameObject TempTree = Instantiate(Tree, new Vector3(navHit.position.x, SpawnOffset, navHit.position.z), Quaternion.Euler(0f, Random.Range(0f, 359f), 0f));
             GameObject TempTree = SpawnFromPool("Tree", new Vector3(navHit.position.x, TreeSpawnOffset, navHit.position.z), Quaternion.Euler(0f, Random.Range(0f, 359f), 0f));
             TempTree.transform.parent = FoodParent.transform;
@@ -94,10 +93,10 @@ public class StaticSpawns : MonoBehaviour
         }
         for (int i = 0; i < numRocks; i++)
         {
-            Vector3 randomDirection = Random.insideUnitSphere * x / 2;
+            Vector3 randomDirection = Random.insideUnitSphere * size / 2;
             randomDirection += new Vector3(0, 1, 0);
             NavMeshHit navHit;
-            NavMesh.SamplePosition(randomDirection, out navHit, x / 2, 5);
+            NavMesh.SamplePosition(randomDirection, out navHit, size / 2, 5);
             //GameObject TempRock = Instantiate(Rock, new Vector3(navHit.position.x, SpawnOffset, navHit.position.z), Quaternion.Euler(Random.Range(0f, 359f), Random.Range(0f, 359f), Random.Range(0f, 359f)));
             GameObject TempRock = SpawnFromPool("Rock", new Vector3(navHit.position.x, RockSpawnOffset, navHit.position.z), Quaternion.Euler(Random.Range(0f, 359f), Random.Range(0f, 359f), Random.Range(0f, 359f)));
             TempRock.transform.parent = RockParent.transform;

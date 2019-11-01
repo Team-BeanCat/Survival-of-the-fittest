@@ -40,6 +40,11 @@ namespace TerrainGeneration {
 
         bool needsUpdate;
 
+        private void Start()
+        {
+            worldSize = Spawn.GetComponent<StaticSpawns>().size;
+        }
+
         void Update () {
             if (needsUpdate && autoUpdate) {
                 needsUpdate = false;

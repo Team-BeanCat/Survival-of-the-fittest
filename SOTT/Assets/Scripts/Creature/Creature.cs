@@ -8,7 +8,7 @@ public class Creature : MonoBehaviour
     //What action the creature is currently taking
     enum State
     {
-        FoodSearch, Idle, MateSearch, WaterSearch, ContinuingTheBloodLine
+        FoodSearch, Idle, MateSearch, WaterSearch, MovingToKnownFood
     }
 
     public FoodSource[] _allFood;
@@ -30,6 +30,7 @@ public class Creature : MonoBehaviour
     Vector3 newDest = new Vector3();
 
     public List<FoodSource> knownFood;
+    public List<float> knownFoodDist;
 
     void Start()
     {
@@ -65,10 +66,10 @@ public class Creature : MonoBehaviour
         //    mate();
         //}
 
-
+        FindNearestKnownFood();
 
         //If The Hunger is below 75% then go eat
-        if (_sustinance < 75f)
+        if (_sustinance < 75f && _sustinance > 20f)
         {
             //Debug.Log(gameObject + " Is hungry");
             _currentState = State.FoodSearch; //Set the state to searching for food
@@ -100,14 +101,10 @@ public class Creature : MonoBehaviour
                     _agent.SetDestination(FoodLocation); //Find the nearest food (will be within range) and head towards it 
                 }
             }
-            /*
-            else if (_hunger<0.1f && !foodSourceInRange())
+            if (_sustinance <= 20f)
             {
-                //find nearest known food source and go to it 
                 
             }
-
-              */  
 
             //Was an else if IF BROKEN CHANGE IT BACK
             if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
@@ -148,8 +145,19 @@ public class Creature : MonoBehaviour
     {
         return null;
     }
+    
+    Transform FindNearestKnownFood()
+    {
+        knownFoodDist.Clear();
+        for (int i = 0; i < knownFood.Count; i++)
+        {
+            knownFoodDist.Add(Vector3.Distance(knownFood[i].gameObject.transform.position, transform.position));
+        }
+        
+        int Loc = MinDistance(knownFoodDist);
 
-
+        return knownFood[Loc].transform;
+    }
 
     bool foodSourceInRange() // checks whether the nearest food source is in range
     {

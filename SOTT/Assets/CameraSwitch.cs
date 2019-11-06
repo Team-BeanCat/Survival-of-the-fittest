@@ -14,10 +14,10 @@ public class CameraSwitch : MonoBehaviour
         //Turn off all cameras at the object
         foreach (GameObject camObj in m_Cameras)
         {
-            camObj.SetActive(false);
+            camObj.GetComponent<Camera>().enabled = false;
         }
         //Turn on the first camera
-        m_Cameras[0].SetActive(true);
+        m_Cameras[0].GetComponent<Camera>().enabled = true;
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class CameraSwitch : MonoBehaviour
     {
         if (Input.GetButtonDown("CycleCam"))
         {
-            m_Cameras[m_activeCamera].SetActive(false); //Disable the current camera
+            m_Cameras[m_activeCamera].GetComponent<Camera>().enabled = false; //Disable the current camera
             m_activeCamera++;                           //Cycle to the next camera
 
             //Check if the active camera index is out of range, if it is then go back to 0
@@ -37,7 +37,7 @@ public class CameraSwitch : MonoBehaviour
             //This line Keeps Throwing IndexOutOfRangeException But I've determined that it still works fine
             try //So naturally i put it in a trycatch to suppress the error - Ben M
             {
-                m_Cameras[m_activeCamera].SetActive(true);  //Enable the new Camera
+                m_Cameras[m_activeCamera].GetComponent<Camera>().enabled = true;  //Enable the new Camera
             }
             catch (System.Exception)
             {

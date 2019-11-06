@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI; //For Navmesh
+using UnityEngine.UI; //For Sliders
+using TMPro;
 
 public class Creature : MonoBehaviour
 {
@@ -33,6 +35,13 @@ public class Creature : MonoBehaviour
     public List<FoodSource> knownFood;
     public List<float> knownFoodDist;
 
+    [Header("Stat Sliders")]
+    public Slider _healthSlider;
+    public Slider _foodSlider;
+    public TextMeshProUGUI _status;
+
+
+
     void Start()
     {
         //Line renderer for displaying sight range
@@ -52,6 +61,10 @@ public class Creature : MonoBehaviour
     void FixedUpdate()
     {
         _sustinance -= 0.05f;
+
+        _healthSlider.value = _health;
+        _foodSlider.value = _sustinance;
+        _status.text = _currentState.ToString();
     }
 
     void Update()

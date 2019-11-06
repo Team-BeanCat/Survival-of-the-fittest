@@ -783,6 +783,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Sustinance
       objectReference: {fileID: 0}
+    - target: {fileID: 1900214352118008083, guid: 88a9a0fd65f91f5409c49e9f74e6e372,
+        type: 3}
+      propertyPath: m_MaxValue
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 5171531181691145282, guid: 88a9a0fd65f91f5409c49e9f74e6e372,
         type: 3}
       propertyPath: m_AnchorMax.y

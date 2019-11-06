@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI; //For Navmesh
 
@@ -8,7 +9,7 @@ public class Creature : MonoBehaviour
     //What action the creature is currently taking
     enum State
     {
-        FoodSearch, Idle, MateSearch, WaterSearch, MovingToKnownFood
+        FoodSearch, Idle, MateSearch, WaterSearch //, MovingToKnownFood
     }
 
     public FoodSource[] _allFood;
@@ -86,11 +87,11 @@ public class Creature : MonoBehaviour
                 //Debug.Log(hit.position);
                 if (Vector3.Distance(hit.position, transform.position) < 1.5*GetNearestFood().transform.localScale.x) //Eat range dependant on object size
                 {
-                    //Debug.Log("Eating Food");
-                    if (!(knownFood.Contains(GetNearestFood())))
-                    {
-                        knownFood.Add(GetNearestFood());
-                    }
+                    ////Debug.Log("Eating Food");
+                    //if (!(knownFood.Contains(GetNearestFood())))
+                    //{
+                    //    knownFood.Add(GetNearestFood());
+                    //}
                     GetNearestFood().Consume(this); //Eat the food
                     targetFood = null;
                     _agent.SetDestination(transform.position); //Trigger the wander function
@@ -154,7 +155,7 @@ public class Creature : MonoBehaviour
             knownFoodDist.Add(Vector3.Distance(knownFood[i].gameObject.transform.position, transform.position));
         }
         
-        int Loc = MinDistance(knownFoodDist);
+    //    int Loc = MinDistance(knownFoodDist);
 
         return knownFood[Loc].transform;
     }*/
@@ -209,20 +210,11 @@ public class Creature : MonoBehaviour
 
     }
     
-    private int MinDistance(List<float> Dist) // takes an array and returns the location of that number
+    private int MinDistance(List<float> distances) // takes an array and returns the location of that number
     {
-        float min = Dist[0];
-        int minLoc = 0;
-        for (int i = 0; i < Dist.Count; i++)
-        {
-            if (min > Dist[i])
-            {
-                minLoc = i;
-                min = Dist[i];
-            }
-        }
-        return minLoc; 
-
+        float minVal = distances.Min(); //F
+        int index = distances.IndexOf(minVal);
+        return index;
     }
 
     void CreatePoints() // renders the range

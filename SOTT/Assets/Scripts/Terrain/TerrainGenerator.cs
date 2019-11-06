@@ -11,7 +11,9 @@ namespace TerrainGeneration {
         public bool autoUpdate = true;
 
         public bool centralize = true;
-
+        //public bool refreshonRuntime;
+        //public float refreshrate = 5f;
+        public NavMeshSurface SpawnNavMesh;
         public NavMeshSurface NavMesh;
 
         public GameObject Spawn;
@@ -42,6 +44,10 @@ namespace TerrainGeneration {
         private void Start()
         {
             worldSize = Spawn.GetComponent<StaticSpawns>().size;
+
+            //Set up automatic refresh of terrain to avoid breaking of shader
+            //InvokeRepeating("Generate", 5f, 5f);
+
         }
 
         void Update () {
@@ -55,6 +61,12 @@ namespace TerrainGeneration {
                     UpdateColours ();
                 }
             }
+        }
+
+        //Rebuild Terrain when application comes into focus
+        private void OnApplicationFocus(bool focus)
+        {
+            Generate();
         }
 
         public TerrainData Generate () {

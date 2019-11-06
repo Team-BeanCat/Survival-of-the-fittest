@@ -45,6 +45,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 0
   centralize: 0
+  SpawnNavMesh: {fileID: 0}
+  NavMesh: {fileID: 0}
+  Spawn: {fileID: 0}
   worldSize: 334
   waterDepth: 0.5
   edgeDepth: 1
@@ -55,7 +58,7 @@ MonoBehaviour:
     lacunarity: 2.25
     scale: 6.7
     offset: {x: 0, y: 0}
-  mat: {fileID: 2100000, guid: e01d6fdc1f0e04cc8a358b6c6d3fb39b, type: 2}
+  mat: {fileID: 2100000, guid: c5be31ff5981cd34c8c2e62c88fff632, type: 2}
   water:
     height: 0.41
     startCol: {r: 0.08904416, g: 0.21439086, b: 0.6509434, a: 0}

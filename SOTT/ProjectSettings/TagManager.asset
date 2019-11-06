@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Food
   - creature
+  - Camera
   layers:
   - Default
   - TransparentFX

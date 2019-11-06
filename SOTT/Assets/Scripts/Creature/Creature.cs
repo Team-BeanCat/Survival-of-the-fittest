@@ -49,12 +49,6 @@ public class Creature : MonoBehaviour
         _sustinance = 80f;
 }
 
-
-    private void Init(float maxhealth)
-    {
-        
-    }
-
     void FixedUpdate()
     {
         _sustinance -= 0.05f;

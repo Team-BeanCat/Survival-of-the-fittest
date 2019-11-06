@@ -18,7 +18,7 @@ public class CameraFacingBillboard : MonoBehaviour
             m_activeCamera++;                           //Cycle to the next camera
             
             //Check if the active camera index is out of range, if it is then go back to 0
-            if (m_activeCamera > m_Cameras.Length)
+            if (m_activeCamera > m_Cameras.Length-1)
             {
                 m_activeCamera = 0; //Return to the first camera in the array
             }

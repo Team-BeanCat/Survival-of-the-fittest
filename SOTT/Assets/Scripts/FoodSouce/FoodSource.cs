@@ -19,7 +19,7 @@ public class FoodSource : MonoBehaviour
     }
 
     public virtual void Consume(Creature consumer)
-    {
+        {
         if (_foodStats._serves > 0)
         {
             if (consumer._creatureStats._dietLock == CreatureStats.DietType.Omnivore)
@@ -44,6 +44,12 @@ public class FoodSource : MonoBehaviour
             {
                 //Award Nothing because it is either a carnivore eating a plant or vice versa
             } 
+
+            //Ensure Sustinance remains below 100
+            if (consumer._sustinance > 100f)
+            {
+                consumer._sustinance = 100f;
+            }
         }
         else
         {

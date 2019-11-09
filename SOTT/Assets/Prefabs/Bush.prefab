@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 7839996396472895356}
   - component: {fileID: 8380832541536066916}
   - component: {fileID: 6566116958970381247}
-  m_Layer: 0
+  - component: {fileID: 1904124602787341864}
+  m_Layer: 9
   m_Name: Sir Bush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78,6 +79,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!135 &1904124602787341864
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2934492505460728}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.0104708625
+  m_Center: {x: -0.000052846968, y: 0.000047804333, z: 0.016318452}
 --- !u!1 &1353879340965923088
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +103,7 @@ GameObject:
   - component: {fileID: 1784427898228229303}
   - component: {fileID: 2974677276498106189}
   - component: {fileID: 4912320229945605158}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Berries
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,9 +180,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4958077327514436116}
   - component: {fileID: 8576824572873207117}
-  - component: {fileID: 9189009297795234947}
   - component: {fileID: 1663160947077133115}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bush
   m_TagString: Food
   m_Icon: {fileID: 0}
@@ -210,20 +223,6 @@ MonoBehaviour:
   _berries: {fileID: 0}
   _regrowMax: 30
   _regrowMin: 10
---- !u!136 &9189009297795234947
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2919895641502295827}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 3
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!208 &1663160947077133115
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -238,7 +237,7 @@ NavMeshObstacle:
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 0
-  m_Center: {x: 0, y: 1.86, z: 0}
+  m_Center: {x: 0, y: 1.13, z: 0}
   m_TimeToStationary: 0.5
 --- !u!1 &9186841702866604872
 GameObject:
@@ -251,7 +250,8 @@ GameObject:
   - component: {fileID: 7807895283928764954}
   - component: {fileID: 8526499060294740703}
   - component: {fileID: 4224361708148592209}
-  m_Layer: 0
+  - component: {fileID: 1327798603982733252}
+  m_Layer: 9
   m_Name: Trunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,3 +318,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &1327798603982733252
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9186841702866604872}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 5668788170693331272, guid: a652575878a049d4082b20d861d0477a, type: 3}

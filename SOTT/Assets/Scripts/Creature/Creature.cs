@@ -14,9 +14,30 @@ public class Creature : MonoBehaviour
         FoodSearch, EatingFood, Idle, MateSearch, WaterSearch //, MovingToKnownFood
     }
 
-    public FoodSource[] _allFood; //All the food in the scene (that are edible by this creature)
-    public List<float> _foodDist = new List<float>(); //Distances To every valid foodsource in the scene
-    public FoodSource targetFood; //Food Currently being Pursued
+    //Is the food compatable with the diet type
+    bool DietMatchQuery(CreatureStats.DietType diet, Food.FoodType foodtype)
+    {
+        if (diet == CreatureStats.DietType.Omnivore)                                            //Omnivore? 
+        {
+            return true;
+        }
+        else if (diet == CreatureStats.DietType.Carnivore && foodtype == Food.FoodType.Meat)    //Carnivore and Meat?
+        {
+            return true;
+        }
+        else if (diet == CreatureStats.DietType.Herbivore && foodtype == Food.FoodType.Plant)   //Herbivore and Plant?
+        {
+            return true;
+        }
+        else //Can't Be edible
+        {
+            return false; 
+        }
+    }
+
+    public List<FoodSource> _allFood = new List<FoodSource>(); //All the food in the scene (that are edible by this creature)
+    //public List<float> _foodDist = new List<float>(); //Distances To every valid foodsource in the scene
+    public Transform targetFood; //Food Currently being Pursued
     public bool showRanges; // render the sight range of creature
     public CreatureStats _creatureStats;
     [Range(0, 100f)]
@@ -34,8 +55,8 @@ public class Creature : MonoBehaviour
     private NavMeshAgent _agent; //Nav mesh agent
     Vector3 newDest = new Vector3();
 
-    public List<FoodSource> knownFood;
-    public List<float> knownFoodDist;
+    //public List<FoodSource> knownFood;
+    //public List<float> knownFoodDist;
 
     [Header("Stat Sliders")]
     public Slider _healthSlider;
@@ -46,8 +67,8 @@ public class Creature : MonoBehaviour
 
     void Start()
     {
-        //Get All Food
-        _foodParent = GameObject.Find("FoodContainer").transform;
+        //Trigger Routine Refreshing of sources every 5sec
+        InvokeRepeating("RefreshFoodSources", 0.3f, 5);
 
         //Line renderer for displaying sight range
         line = gameObject.GetComponent<LineRenderer>();
@@ -61,7 +82,7 @@ public class Creature : MonoBehaviour
         line.enabled = showRanges;
         _agent = GetComponent<NavMeshAgent>();
         _sustinance = 80f;
-}
+    }
 
     void FixedUpdate()
     {
@@ -71,35 +92,6 @@ public class Creature : MonoBehaviour
         _foodSlider.value = _sustinance;
         _status.text = _currentState.ToString();
 
-        #region RefreshDistances
-        _foodDist.Clear(); //Wipe the list clean
-        _allFood = FindObjectsOfType<FoodSource>();
-
-        for (int i = 0; i < _allFood.Length; i++)
-        {
-            //FOOD TYPE FILTERING - UBERJANK (try not to think about it too hard)
-            if (_allFood[i]._servesRemaining > 0 && _creatureStats._dietLock == CreatureStats.DietType.Omnivore) //If this creature is an omnivore then just go for it!
-            {
-                //Debug.Log("foodtype");
-                _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
-            }
-
-            //Carnivore
-            else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Meat && _creatureStats._dietLock == CreatureStats.DietType.Carnivore)
-            {
-                //Debug.Log("foodtype");
-                _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
-            }
-
-            //Herbivore
-            else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Plant && _creatureStats._dietLock == CreatureStats.DietType.Herbivore)
-            {
-                //Found possible food
-                //Debug.Log("foodtype");
-                _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
-            }
-        } 
-        #endregion
     }
 
     void Update()
@@ -137,7 +129,7 @@ public class Creature : MonoBehaviour
                     //{
                     //    knownFood.Add(GetNearestFood());
                     //}
-                    targetFood.Consume(this); //Eat the food
+                    targetFood.GetComponent<FoodSource>().Consume(this); //Eat the food
                     targetFood = null;
                     _agent.SetDestination(transform.position); //Trigger the wander function
                 }
@@ -203,8 +195,8 @@ public class Creature : MonoBehaviour
 
     bool foodSourceInRange() // checks whether the nearest food source is in range
     {
-        FoodSource nearest = GetNearestFood();
-        if (Vector3.Distance(nearest.transform.position, transform.position) <= _creatureStats._sight && nearest._servesRemaining > 0)
+        Transform nearest = GetNearestFood();
+        if (Vector3.Distance(nearest.position, transform.position) <= _creatureStats._sight && nearest.GetComponent<FoodSource>()._servesRemaining > 0)
         {
             return true;
         }
@@ -215,43 +207,26 @@ public class Creature : MonoBehaviour
         
     }
 
-
-    private FoodSource GetNearestFood() // finds the nearest object with tag food and returns it
+    //Get Closest Food
+    Transform GetNearestFood()
     {
-        _foodDist.Clear(); //Wipe the list clean
-        _allFood = FindObjectsOfType<FoodSource>();
-
-        FoodSource nearest;
-
-        for (int i = 0; i < _allFood.Length; i++)
+        Transform bestTarget = null;
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+        foreach (FoodSource potentialTarget in _allFood)
         {
-            //FOOD TYPE FILTERING - UBERJANK (try not to think about it too hard)
-            if (_allFood[i]._servesRemaining > 0 && _creatureStats._dietLock == CreatureStats.DietType.Omnivore) //If this creature is an omnivore then just go for it!
+            Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
+            float dSqrToTarget = directionToTarget.sqrMagnitude;
+            if (dSqrToTarget < closestDistanceSqr)
             {
-                //Debug.Log("foodtype");
-                _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
-            }
-
-            //Carnivore
-            else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Meat && _creatureStats._dietLock == CreatureStats.DietType.Carnivore)
-            { 
-                //Debug.Log("foodtype");
-                _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
-            }
-
-            //Herbivore
-            else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Plant && _creatureStats._dietLock == CreatureStats.DietType.Herbivore)
-            {
-                //Found possible food
-                //Debug.Log("foodtype");
-                _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
+                closestDistanceSqr = dSqrToTarget;
+                bestTarget = potentialTarget.transform;
             }
         }
-        nearest = _allFood[MinDistance(_foodDist)].GetComponent<FoodSource>();
-        return nearest;
 
+        return bestTarget;
     }
-    
+
     private int MinDistance(List<float> distances) // takes an array and returns the location of that number
     {
         float minVal = distances.Min(); //F
@@ -265,7 +240,7 @@ public class Creature : MonoBehaviour
         float z;
 
         float angle = 20f;
-        //it works, just don't think about it to much
+        //it works, just don't think about it too much
         for (int i = 0; i < (_segments + 1); i++)
         {
             x = Mathf.Sin(Mathf.Deg2Rad * angle) * _creatureStats._sight;
@@ -289,5 +264,23 @@ public class Creature : MonoBehaviour
 
         return navHit.position;
         //return randDirection;
+    }
+
+    //Get all food (filtered)
+    void RefreshFoodSources()
+    {
+        FoodSource[] tempFood = FindObjectsOfType<FoodSource>(); //Get all food in the scene for filtering
+
+        _allFood.Clear(); //remove anything already in the list
+
+        //Filter Compatable food into _allFood
+        for (int i = 0; i < tempFood.Length; i++)
+        {
+            //Add to _allFood if valid
+            if (DietMatchQuery(_creatureStats._dietLock, tempFood[i]._foodStats._type))
+            {
+                _allFood.Add(tempFood[i]);
+            }
+        }
     }
 }

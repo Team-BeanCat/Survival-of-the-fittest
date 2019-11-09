@@ -11,16 +11,18 @@ public class Creature : MonoBehaviour
     //What action the creature is currently taking
     enum State
     {
-        FoodSearch, Idle, MateSearch, WaterSearch //, MovingToKnownFood
+        FoodSearch, EatingFood, Idle, MateSearch, WaterSearch //, MovingToKnownFood
     }
 
-    public FoodSource[] _allFood;
-    public List<float> _foodDist = new List<float>();
+    public FoodSource[] _allFood; //All the food in the scene (that are edible by this creature)
+    public List<float> _foodDist = new List<float>(); //Distances To every valid foodsource in the scene
     public FoodSource targetFood; //Food Currently being Pursued
     public bool showRanges; // render the sight range of creature
     public CreatureStats _creatureStats;
     [Range(0, 100f)]
     public float _sustinance = 100f;
+    Transform _foodParent;
+
 
     [SerializeField] private State _currentState = State.Idle;
     private float _health = 100f;
@@ -44,6 +46,9 @@ public class Creature : MonoBehaviour
 
     void Start()
     {
+        //Get All Food
+        _foodParent = GameObject.Find("FoodContainer").transform;
+
         //Line renderer for displaying sight range
         line = gameObject.GetComponent<LineRenderer>();
         line.positionCount =_segments + 1;
@@ -60,11 +65,41 @@ public class Creature : MonoBehaviour
 
     void FixedUpdate()
     {
-        _sustinance -= 0.05f;
+        _sustinance -= 0.02f;
 
         _healthSlider.value = _health;
         _foodSlider.value = _sustinance;
         _status.text = _currentState.ToString();
+
+        #region RefreshDistances
+        _foodDist.Clear(); //Wipe the list clean
+        _allFood = FindObjectsOfType<FoodSource>();
+
+        for (int i = 0; i < _allFood.Length; i++)
+        {
+            //FOOD TYPE FILTERING - UBERJANK (try not to think about it too hard)
+            if (_allFood[i]._servesRemaining > 0 && _creatureStats._dietLock == CreatureStats.DietType.Omnivore) //If this creature is an omnivore then just go for it!
+            {
+                //Debug.Log("foodtype");
+                _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
+            }
+
+            //Carnivore
+            else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Meat && _creatureStats._dietLock == CreatureStats.DietType.Carnivore)
+            {
+                //Debug.Log("foodtype");
+                _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
+            }
+
+            //Herbivore
+            else if (_allFood[i]._servesRemaining > 0 && _allFood[i]._foodStats._type == Food.FoodType.Plant && _creatureStats._dietLock == CreatureStats.DietType.Herbivore)
+            {
+                //Found possible food
+                //Debug.Log("foodtype");
+                _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
+            }
+        } 
+        #endregion
     }
 
     void Update()
@@ -77,7 +112,7 @@ public class Creature : MonoBehaviour
         //FindNearestKnownFood();
 
         //If The Hunger is below 75% then go eat
-        if (_sustinance < 75f && _sustinance > 20f)
+        if (_sustinance < 75f)
         {
             //Debug.Log(gameObject + " Is hungry");
             _currentState = State.FoodSearch; //Set the state to searching for food
@@ -85,21 +120,24 @@ public class Creature : MonoBehaviour
             //If the creature has found food
             if (foodSourceInRange() == true)
             {
+                targetFood = GetNearestFood();
+
                 //Debug.Log("Found Food!");
-                Vector3 FoodLocation = GetNearestFood().transform.position;
+                _currentState = State.EatingFood; //Update State
+                Vector3 FoodLocation = targetFood.transform.position;
                 //Check if the nearest food source is within eating range
 
                 NavMeshHit hit;
-                NavMesh.SamplePosition(FoodLocation, out hit, 5f, 1 << NavMesh.GetAreaFromName("Walkable"));
-                //Debug.Log(hit.position);
-                if (Vector3.Distance(hit.position, transform.position) < 1.5*GetNearestFood().transform.localScale.x) //Eat range dependant on object size
+                NavMesh.SamplePosition(FoodLocation, out hit, 5f, 1);
+                float dist = Vector3.Distance(hit.position, transform.position);
+                if (dist < 1.5*targetFood.transform.localScale.x) //Eat range dependant on object size
                 {
                     ////Debug.Log("Eating Food");
                     //if (!(knownFood.Contains(GetNearestFood())))
                     //{
                     //    knownFood.Add(GetNearestFood());
                     //}
-                    GetNearestFood().Consume(this); //Eat the food
+                    targetFood.Consume(this); //Eat the food
                     targetFood = null;
                     _agent.SetDestination(transform.position); //Trigger the wander function
                 }
@@ -109,17 +147,13 @@ public class Creature : MonoBehaviour
                     _agent.SetDestination(FoodLocation); //Find the nearest food (will be within range) and head towards it 
                 }
             }
-            if (_sustinance <= 20f)
-            {
-                
-            }
 
             //Was an else if IF BROKEN CHANGE IT BACK
             if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
             {
                 //Debug.Log("Searching");
                 //Get a random point in a circle with a radius equal to the creature's sight * 2
-                newDest = RandomNavSphere(transform.position, _creatureStats._sight * 2, LayerMask.NameToLayer("Walkable")); //Pick a random point within the sight range
+                newDest = RandomNavSphere(transform.position, _creatureStats._sight * 2); //Pick a random point within the sight range
                 //Debug.Log("Heading To " + newDest);
 
                 //Set that as the destination for the Agent
@@ -184,8 +218,10 @@ public class Creature : MonoBehaviour
 
     private FoodSource GetNearestFood() // finds the nearest object with tag food and returns it
     {
-
+        _foodDist.Clear(); //Wipe the list clean
         _allFood = FindObjectsOfType<FoodSource>();
+
+        FoodSource nearest;
 
         for (int i = 0; i < _allFood.Length; i++)
         {
@@ -211,9 +247,8 @@ public class Creature : MonoBehaviour
                 _foodDist.Add(Vector3.Distance(_allFood[i].transform.position, transform.position));
             }
         }
-        targetFood = _allFood[MinDistance(_foodDist)].GetComponent<FoodSource>();
-        _foodDist.Clear(); //Wipe the list clean
-        return targetFood;
+        nearest = _allFood[MinDistance(_foodDist)].GetComponent<FoodSource>();
+        return nearest;
 
     }
     
@@ -243,15 +278,14 @@ public class Creature : MonoBehaviour
     }
 
     //Generate wander destination
-    public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
+    public static Vector3 RandomNavSphere(Vector3 origin, float dist)
     {
+        //Debug.Log("Generating a random point!");
+
         Vector3 randDirection = Random.insideUnitSphere * dist;
-
         randDirection += origin;
-
         NavMeshHit navHit;
-
-        NavMesh.SamplePosition(randDirection, out navHit, 2, layermask);
+        NavMesh.SamplePosition(randDirection, out navHit, 2, 1);
 
         return navHit.position;
         //return randDirection;

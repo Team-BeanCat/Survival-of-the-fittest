@@ -44,11 +44,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoUpdate: 0
-  centralize: 0
-  SpawnNavMesh: {fileID: 0}
-  NavMesh: {fileID: 0}
-  Spawn: {fileID: 0}
-  worldSize: 334
+  centralize: 1
+  navMesh: {fileID: 0}
+  staticSpawn: {fileID: 0}
+  creatureSpawn: {fileID: 0}
+  worldSize: 200
   waterDepth: 0.5
   edgeDepth: 1
   terrainNoise:

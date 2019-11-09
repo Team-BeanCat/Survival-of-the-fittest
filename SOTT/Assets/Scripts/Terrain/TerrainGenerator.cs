@@ -2,6 +2,12 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// THIS CODE WAS NOT WRITTEN BY US!
+/// 
+/// Everything in The terrain Folder under scripts was written by Sebastian Lague (Modified slightly by us)
+/// </summary>
+
 namespace TerrainGeneration {
     [ExecuteInEditMode]
     public class TerrainGenerator : MonoBehaviour {
@@ -9,14 +15,11 @@ namespace TerrainGeneration {
         const string meshHolderName = "Terrain Mesh";
 
         public bool autoUpdate = true;
+        public bool randomSeed = false; //Whether to generate a new seed every time the game is started
+        public bool centralize = true;  //Whether to centre the 
+        public NavMeshSurface navMesh;
 
-        public bool centralize = true;
-        //public bool refreshonRuntime;
-        //public float refreshrate = 5f;
-        public NavMeshSurface SpawnNavMesh;
-        public NavMeshSurface NavMesh;
-
-        public GameObject Spawn;
+        public GameObject Environment;
 
         public int worldSize = 20;
         public float waterDepth = .2f;
@@ -41,9 +44,27 @@ namespace TerrainGeneration {
 
         bool needsUpdate;
 
-        private void Start()
+        private void Awake()
         {
-            worldSize = Spawn.GetComponent<StaticSpawns>().size;
+            //Set world size in all other terrain generation scripts
+            Environment.GetComponent<StaticSpawns>().size = worldSize;
+            Environment.GetComponent<CreatureSpawn>().size = worldSize;
+
+
+            if (randomSeed)
+            {
+                //Generate a random seed between -1000 and 1000
+                terrainNoise.seed = Random.Range(-1000, 1001);
+                
+                //Random Offset
+                terrainNoise.offset.x = Random.Range(-1000, 1001);
+                terrainNoise.offset.y= Random.Range(-1000, 1001);
+
+                //Generate Terrain with new Settings
+                Generate();
+            }
+
+            
 
             //Set up automatic refresh of terrain to avoid breaking of shader
             //InvokeRepeating("Generate", 5f, 5f);
@@ -54,8 +75,8 @@ namespace TerrainGeneration {
             if (needsUpdate && autoUpdate) {
                 needsUpdate = false;
                 Generate ();
-                NavMesh.BuildNavMesh();
-                Spawn.GetComponent<StaticSpawns>().spawn();
+                navMesh.BuildNavMesh();
+                Environment.GetComponent<StaticSpawns>().spawn();
             } else {
                 if (!Application.isPlaying) {
                     UpdateColours ();
@@ -71,6 +92,10 @@ namespace TerrainGeneration {
 
         public TerrainData Generate () {
             CreateMeshComponents ();
+
+            //Set world size in all other terrain generation scripts
+            Environment.GetComponent<StaticSpawns>().size = worldSize;
+            Environment.GetComponent<CreatureSpawn>().size = worldSize;
 
             int numTilesPerLine = Mathf.CeilToInt (worldSize);
             float min = (centralize) ? -numTilesPerLine / 2f : 0;
@@ -179,6 +204,7 @@ namespace TerrainGeneration {
 
             numTiles = numLandTiles + numWaterTiles;
             waterPercent = numWaterTiles / (float) numTiles;
+            navMesh.BuildNavMesh();
             return terrainData;
         }
 

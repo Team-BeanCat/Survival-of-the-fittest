@@ -92,6 +92,17 @@ public class Creature : MonoBehaviour
         _foodSlider.value = _sustinance;
         _status.text = _currentState.ToString();
 
+        //Take damage if starving
+        if (_sustinance < 5f)
+        {
+            _health -= 0.05f;
+        }
+
+        //"Die if dead" - Ben McGaw 10/11/2019
+        if (_health < 0)
+        {
+            Kill();
+        }
     }
 
     void Update()
@@ -151,13 +162,6 @@ public class Creature : MonoBehaviour
                 //Set that as the destination for the Agent
                 _agent.SetDestination(newDest);
 
-            }
-            //Debug.Log(Vector3.Distance(_agent.destination, transform.position));
-            if (_sustinance<5f)
-            {
-                Debug.Log(gameObject + " has died");
-                CameraControl._instance.creatures.Remove(transform); //Remove this from the camera controller targets
-                Destroy(gameObject);
             }
 
         }
@@ -282,5 +286,12 @@ public class Creature : MonoBehaviour
                 _allFood.Add(tempFood[i]);
             }
         }
+    }
+
+    public void Kill()
+    {
+        Debug.Log(gameObject + " has died");
+        CameraControl._instance.creatures.Remove(transform); //Remove this from the camera controller targets
+        Destroy(gameObject);
     }
 }

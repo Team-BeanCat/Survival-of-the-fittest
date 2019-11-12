@@ -111,25 +111,16 @@ public class Creature : MonoBehaviour
             //If the creature has found food
             if (FoodSense())
             {
-                FoodSense(targetFood, out targetFood); //Run overlapsphere again with output
-
+            FoodSense(targetFood, out targetFood); //Run overlapsphere again with output
                 //Debug.Log("Found Food!");
                 _currentState = State.EatingFood; //Update State
                 Vector3 FoodLocation = Vector3.zero;
-                try
-                {
-                    FoodLocation = targetFood.position;
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError("Happened Again: targetfood = " + targetFood);
-                }
 
                 //Check if the nearest food source is within eating range
                 NavMeshHit hit;
                 NavMesh.SamplePosition(FoodLocation, out hit, 5f, 1);
                 float dist = Vector3.Distance(hit.position, transform.position);
-                if (dist < 1.5*targetFood.transform.localScale.x) //Eat range dependant on object size
+                if (dist < 1.5 * targetFood.transform.localScale.x) //Eat range dependant on object size
                 {
                     ////Debug.Log("Eating Food");
                     //if (!(knownFood.Contains(GetNearestFood())))
@@ -153,12 +144,13 @@ public class Creature : MonoBehaviour
                 //Debug.Log("Searching");
                 //Get a random point in a circle with a radius equal to the creature's sight * 2
                 newDest = RandomNavSphere(transform.position, _creatureStats._sight * 2); //Pick a random point within the sight range
-                //Debug.Log("Heading To " + newDest);
+                                                                                            //Debug.Log("Heading To " + newDest);
 
                 //Set that as the destination for the Agent
                 _agent.SetDestination(newDest);
 
-            }
+            } 
+
 
         }
         else

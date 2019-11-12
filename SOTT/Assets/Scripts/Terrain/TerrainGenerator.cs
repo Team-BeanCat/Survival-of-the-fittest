@@ -40,6 +40,7 @@ namespace TerrainGeneration {
 
         MeshFilter meshFilter;
         MeshRenderer meshRenderer;
+        public MeshCollider terraincol;
         Mesh mesh;
 
         bool needsUpdate;
@@ -205,6 +206,7 @@ namespace TerrainGeneration {
             numTiles = numLandTiles + numWaterTiles;
             waterPercent = numWaterTiles / (float) numTiles;
             navMesh.BuildNavMesh();
+            terraincol.sharedMesh = mesh;
             return terrainData;
         }
 

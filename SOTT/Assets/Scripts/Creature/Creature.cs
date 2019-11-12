@@ -67,8 +67,6 @@ public class Creature : MonoBehaviour
 
     void Start()
     {
-        //Trigger Routine Refreshing of sources every 5sec
-        InvokeRepeating("RefreshFoodSources", 0.3f, 5);
 
         //Line renderer for displaying sight range
         line = gameObject.GetComponent<LineRenderer>();
@@ -103,16 +101,6 @@ public class Creature : MonoBehaviour
         {
             Kill();
         }
-    }
-
-    void Update()
-    {
-        //if (hunger >= 50f) //if hunger is large enough then find a mate
-        //{
-        //    mate();
-        //}
-
-        //FindNearestKnownFood();
 
         //If The Hunger is below 75% then go eat
         if (_sustinance < 75f)
@@ -121,15 +109,23 @@ public class Creature : MonoBehaviour
             _currentState = State.FoodSearch; //Set the state to searching for food
 
             //If the creature has found food
-            if (foodSourceInRange() == true)
+            if (FoodSense())
             {
-                targetFood = GetNearestFood();
+                FoodSense(targetFood, out targetFood); //Run overlapsphere again with output
 
                 //Debug.Log("Found Food!");
                 _currentState = State.EatingFood; //Update State
-                Vector3 FoodLocation = targetFood.transform.position;
-                //Check if the nearest food source is within eating range
+                Vector3 FoodLocation = Vector3.zero;
+                try
+                {
+                    FoodLocation = targetFood.position;
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError("Happened Again: targetfood = " + targetFood);
+                }
 
+                //Check if the nearest food source is within eating range
                 NavMeshHit hit;
                 NavMesh.SamplePosition(FoodLocation, out hit, 5f, 1);
                 float dist = Vector3.Distance(hit.position, transform.position);
@@ -183,24 +179,45 @@ public class Creature : MonoBehaviour
     {
         return null;
     }
-    /*
-    Transform FindNearestKnownFood()
+
+    //Is any food in the creature's sensory sphere, optionally output the closest
+    bool FoodSense(Transform defaultout, out Transform output)
     {
-        knownFoodDist.Clear();
-        for (int i = 0; i < knownFood.Count; i++)
+
+        float tempdistance;
+        float nearest = float.MaxValue;
+        FoodSource tempsource;
+        Transform outtemp = null;
+        Collider[] cols = Physics.OverlapSphere(transform.position, _creatureStats._sight, 1 << 9);
+        foreach (Collider foodcol in cols)
         {
-            knownFoodDist.Add(Vector3.Distance(knownFood[i].gameObject.transform.position, transform.position));
+            tempdistance = Vector3.Distance(transform.position, foodcol.transform.position);
+            tempsource = foodcol.GetComponent<FoodSource>();
+            if (tempdistance < nearest && tempsource._servesRemaining > 0 && tempsource._approachingCreature == this || tempsource._approachingCreature == null)
+            {
+                nearest = tempdistance;
+                outtemp = foodcol.transform;
+            }
         }
-        
-    //    int Loc = MinDistance(knownFoodDist);
 
-        return knownFood[Loc].transform;
-    }*/
+        if (outtemp != null)
+        {
+            output = outtemp;
+            output.GetComponent<FoodSource>()._approachingCreature = this;
+            return true;
+        }
+        else
+        {
+            output = defaultout;
+            return false;
+        }
+    }
 
-    bool foodSourceInRange() // checks whether the nearest food source is in range
+    //Overload of FoodSense that only checks for food within range
+    bool FoodSense()
     {
-        Transform nearest = GetNearestFood();
-        if (Vector3.Distance(nearest.position, transform.position) <= _creatureStats._sight && nearest.GetComponent<FoodSource>()._servesRemaining > 0)
+        Collider[] cols = Physics.OverlapSphere(transform.position, _creatureStats._sight, 1 << 9);
+        if (cols.Length > 0)
         {
             return true;
         }
@@ -208,27 +225,6 @@ public class Creature : MonoBehaviour
         {
             return false;
         }
-        
-    }
-
-    //Get Closest Food
-    Transform GetNearestFood()
-    {
-        Transform bestTarget = null;
-        float closestDistanceSqr = Mathf.Infinity;
-        Vector3 currentPosition = transform.position;
-        foreach (FoodSource potentialTarget in _allFood)
-        {
-            Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
-            float dSqrToTarget = directionToTarget.sqrMagnitude;
-            if (dSqrToTarget < closestDistanceSqr)
-            {
-                closestDistanceSqr = dSqrToTarget;
-                bestTarget = potentialTarget.transform;
-            }
-        }
-
-        return bestTarget;
     }
 
     private int MinDistance(List<float> distances) // takes an array and returns the location of that number
@@ -271,6 +267,7 @@ public class Creature : MonoBehaviour
     }
 
     //Get all food (filtered)
+    [System.Obsolete()]
     void RefreshFoodSources()
     {
         FoodSource[] tempFood = FindObjectsOfType<FoodSource>(); //Get all food in the scene for filtering
@@ -294,4 +291,6 @@ public class Creature : MonoBehaviour
         CameraControl._instance.creatures.Remove(transform); //Remove this from the camera controller targets
         Destroy(gameObject);
     }
+
+    
 }

@@ -12,6 +12,7 @@ public class FoodSource : MonoBehaviour
     public Animator _animator;
     //[HideInInspector]
     public int _servesRemaining;
+    public Creature _approachingCreature; //The Creature Currently Approaching this food to eat it
 
     private void Awake()
     {
@@ -61,6 +62,7 @@ public class FoodSource : MonoBehaviour
     {
         Debug.Log("Food Eaten");
         _servesRemaining--;
+        _approachingCreature = null; //Remove reservation
     }
 
 }

@@ -51,6 +51,7 @@ public class Creature : MonoBehaviour
     private float _age = 0f;
     
     private int _segments = 50; //Segments for sight field line
+    private int _walkableArea = 0; //Index of walkable navmesh area
     private LineRenderer line; // line renderer for 
     private NavMeshAgent _agent; //Nav mesh agent
     Vector3 newDest = new Vector3();
@@ -67,6 +68,7 @@ public class Creature : MonoBehaviour
 
     void Start()
     {
+        _walkableArea = NavMesh.GetAreaFromName("Walkable");
 
         //Line renderer for displaying sight range
         line = gameObject.GetComponent<LineRenderer>();
@@ -114,11 +116,10 @@ public class Creature : MonoBehaviour
             FoodSense(targetFood, out targetFood); //Run overlapsphere again with output
                 //Debug.Log("Found Food!");
                 _currentState = State.EatingFood; //Update State
-                Vector3 FoodLocation = Vector3.zero;
 
                 //Check if the nearest food source is within eating range
                 NavMeshHit hit;
-                NavMesh.SamplePosition(FoodLocation, out hit, 5f, 1);
+                NavMesh.SamplePosition(targetFood.position, out hit, 5f, 1 << _walkableArea);
                 float dist = Vector3.Distance(hit.position, transform.position);
                 if (dist < 1.5 * targetFood.transform.localScale.x) //Eat range dependant on object size
                 {
@@ -134,12 +135,12 @@ public class Creature : MonoBehaviour
                 else
                 {
                     //Go towards it
-                    _agent.SetDestination(FoodLocation); //Find the nearest food (will be within range) and head towards it 
+                    _agent.SetDestination(hit.position); //Find the nearest food (will be within range) and head towards it 
                 }
             }
 
             //Was an else if IF BROKEN CHANGE IT BACK
-            if (Vector3.Distance(_agent.destination, transform.position) < 1.5) //Check if the Creature is at the pathfinder's destination
+            if (Vector3.Distance(_agent.destination, transform.position) < targetFood.GetComponent<FoodSource>()._foodStats._eatRange * targetFood.localScale.x) //Check if the Creature is at the pathfinder's destination
             {
                 //Debug.Log("Searching");
                 //Get a random point in a circle with a radius equal to the creature's sight * 2
@@ -208,15 +209,18 @@ public class Creature : MonoBehaviour
     //Overload of FoodSense that only checks for food within range
     bool FoodSense()
     {
+        FoodSource tempsource;
         Collider[] cols = Physics.OverlapSphere(transform.position, _creatureStats._sight, 1 << 9);
-        if (cols.Length > 0)
+        foreach(Collider col in cols)
         {
-            return true;
+            tempsource = col.GetComponent<FoodSource>();
+            if (tempsource._servesRemaining > 0 && tempsource._approachingCreature == this || tempsource._approachingCreature == null)
+            {
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+       
+        return false;
     }
 
     private int MinDistance(List<float> distances) // takes an array and returns the location of that number
@@ -245,14 +249,14 @@ public class Creature : MonoBehaviour
     }
 
     //Generate wander destination
-    public static Vector3 RandomNavSphere(Vector3 origin, float dist)
+    public Vector3 RandomNavSphere(Vector3 origin, float dist)
     {
         //Debug.Log("Generating a random point!");
 
         Vector3 randDirection = Random.insideUnitSphere * dist;
         randDirection += origin;
         NavMeshHit navHit;
-        NavMesh.SamplePosition(randDirection, out navHit, 2, 1);
+        NavMesh.SamplePosition(randDirection, out navHit, 4, 1 << _walkableArea);
 
         return navHit.position;
         //return randDirection;

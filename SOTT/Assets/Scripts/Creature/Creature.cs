@@ -140,7 +140,7 @@ public class Creature : MonoBehaviour
             }
 
             //Was an else if IF BROKEN CHANGE IT BACK
-            if (Vector3.Distance(_agent.destination, transform.position) < targetFood.GetComponent<FoodSource>()._foodStats._eatRange * targetFood.localScale.x) //Check if the Creature is at the pathfinder's destination
+            if (Vector3.Distance(_agent.destination, transform.position) < 1.5/* targetFood.GetComponent<FoodSource>()._foodStats._eatRange * targetFood.localScale.x*/) //Check if the Creature is at the pathfinder's destination
             {
                 //Debug.Log("Searching");
                 //Get a random point in a circle with a radius equal to the creature's sight * 2

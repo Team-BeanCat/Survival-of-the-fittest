@@ -1,0 +1,48 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="Jones bbq and foot massage but he drops his music in his deep fryer_data" version="1.3.0" audacityversion="2.3.2" sel0="0.1326288235" sel1="0.1326288235" vpos="0" h="0.0000000000" zoom="75.3983918129" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags>
+		<tag name="Software" value="Lavf57.56.101"/>
+		<tag name="major_brand" value="dash"/>
+		<tag name="minor_version" value="0"/>
+		<tag name="compatible_brands" value="iso6mp41"/>
+	</tags>
+	<wavetrack name="Jone&apos;s BBQ and Foot Massage REMIX D" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="63.095734" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="984960">
+				<waveblock start="0">
+					<simpleblockfile filename="e08085e7.au" len="262144" min="-305.477753" max="305.492126" rms="265.284821"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0808f5c.au" len="262144" min="-284.878876" max="284.673462" rms="284.673065"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e080889e.au" len="262144" min="-284.673462" max="284.673462" rms="284.673157"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e0808915.au" len="198528" min="-286.292206" max="286.43576" rms="284.230499"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Jone&apos;s BBQ and Foot Massage REMIX D" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="63.095734" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="984960">
+				<waveblock start="0">
+					<simpleblockfile filename="e0808632.au" len="262144" min="-304.001862" max="304.006836" rms="265.236786"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0808db0.au" len="262144" min="-284.878876" max="284.673462" rms="284.673065"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e0808027.au" len="262144" min="-284.673462" max="284.673462" rms="284.673157"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e080827a.au" len="198528" min="-286.292206" max="286.43576" rms="284.230499"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

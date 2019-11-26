@@ -15,17 +15,17 @@ public class Creature : MonoBehaviour
     }
 
     //Is the food compatable with the diet type
-    bool DietMatchQuery(CreatureStats.DietType diet, Food.FoodType foodtype)
+    bool DietMatchQuery(CreatureGenome.DietType diet, Food.FoodType foodtype)
     {
-        if (diet == CreatureStats.DietType.Omnivore)                                            //Omnivore? 
+        if (diet == CreatureGenome.DietType.Omnivore)                                            //Omnivore? 
         {
             return true;
         }
-        else if (diet == CreatureStats.DietType.Carnivore && foodtype == Food.FoodType.Meat)    //Carnivore and Meat?
+        else if (diet == CreatureGenome.DietType.Carnivore && foodtype == Food.FoodType.Meat)    //Carnivore and Meat?
         {
             return true;
         }
-        else if (diet == CreatureStats.DietType.Herbivore && foodtype == Food.FoodType.Plant)   //Herbivore and Plant?
+        else if (diet == CreatureGenome.DietType.Herbivore && foodtype == Food.FoodType.Plant)   //Herbivore and Plant?
         {
             return true;
         }
@@ -39,7 +39,7 @@ public class Creature : MonoBehaviour
     //public List<float> _foodDist = new List<float>(); //Distances To every valid foodsource in the scene
     public Transform targetFood; //Food Currently being Pursued
     public bool showRanges; // render the sight range of creature
-    public CreatureStats _creatureStats;
+    public CreatureGenome _creatureStats;
     [Range(0, 100f)]
     public float _sustinance = 100f;
     Transform _foodParent;
@@ -160,7 +160,7 @@ public class Creature : MonoBehaviour
         }
 
         //If above 50% health attack and is either omnivorou or carnivorous
-        if (_health >= _maxhealth/2 && _creatureStats._dietLock == CreatureStats.DietType.Carnivore || _creatureStats._dietLock == CreatureStats.DietType.Omnivore) 
+        if (_health >= _maxhealth/2 && _creatureStats._dietLock == CreatureGenome.DietType.Carnivore || _creatureStats._dietLock == CreatureGenome.DietType.Omnivore) 
         {
             //attack
         }

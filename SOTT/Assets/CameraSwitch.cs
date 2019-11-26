@@ -5,20 +5,24 @@ using UnityEngine;
 public class CameraSwitch : MonoBehaviour
 {
     int m_activeCamera = 0; //The index of the active camera in m_Cameras
-    GameObject[] m_Cameras; //All the cameras to cycle through
+    public GameObject[] m_Cameras; //All the cameras to cycle through
+    public GameObject[] Listeners;
     
     private void Start()
     {
         m_Cameras = GameObject.FindGameObjectsWithTag("Camera"); //Get All the Cameras 
+        Listeners = GameObject.FindGameObjectsWithTag("Listeners");
+        
 
         //Turn off all cameras at the object
         foreach (GameObject camObj in m_Cameras)
         {
             camObj.GetComponent<Camera>().enabled = false;
-            camObj.GetComponent<AudioListener>().enabled = false;
+            
         }
         //Turn on the first camera
-        m_Cameras[0].GetComponent<AudioListener>().enabled = true;
+        Listeners[0].GetComponent<AudioListener>().enabled = true;
+        Listeners[1].GetComponent<AudioListener>().enabled = false;
         m_Cameras[0].GetComponent<Camera>().enabled = true;
     }
 
@@ -28,7 +32,7 @@ public class CameraSwitch : MonoBehaviour
         if (Input.GetButtonDown("CycleCam"))
         {
             m_Cameras[m_activeCamera].GetComponent<Camera>().enabled = false; //Disable the current camera
-            m_Cameras[m_activeCamera].GetComponent<AudioListener>().enabled = false; //Disable the current camera
+            Listeners[m_activeCamera].GetComponent<AudioListener>().enabled = false; //Disable the current camera
             m_activeCamera++;                           //Cycle to the next camera
 
             //Check if the active camera index is out of range, if it is then go back to 0
@@ -41,7 +45,7 @@ public class CameraSwitch : MonoBehaviour
             try //So naturally i put it in a trycatch to suppress the error - Ben M
             {
                 m_Cameras[m_activeCamera].GetComponent<Camera>().enabled = true;  //Enable the new Camera
-                m_Cameras[m_activeCamera].GetComponent<AudioListener>().enabled = true;  //Enable the new Camera
+                Listeners[m_activeCamera].GetComponent<AudioListener>().enabled = true;  //Enable the new Camera
             }
             catch (System.Exception)
             {

@@ -8,7 +8,9 @@ public class CameraSwitch : MonoBehaviour
     public GameObject[] m_Cameras; //All the cameras to cycle through
     public GameObject[] Listeners;
 
-    private bool mouseState = false; 
+    private bool mouseState = false;
+
+    public bool showNames = true;
     
     private void Start()
     {
@@ -34,6 +36,10 @@ public class CameraSwitch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            showNames = !showNames;
+        }
         if (Input.GetKeyDown(KeyCode.X))
         {
             Cursor.lockState = CursorLockMode.None;

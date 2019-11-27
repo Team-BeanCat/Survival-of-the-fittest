@@ -11,7 +11,7 @@ public class CameraSwitch : MonoBehaviour
     private void Start()
     {
         m_Cameras = GameObject.FindGameObjectsWithTag("Camera"); //Get All the Cameras 
-        Listeners = GameObject.FindGameObjectsWithTag("Listeners");
+        Listeners = m_Cameras;
         
 
         //Turn off all cameras at the object

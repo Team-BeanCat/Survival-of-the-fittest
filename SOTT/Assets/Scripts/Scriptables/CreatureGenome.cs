@@ -42,6 +42,8 @@ public class CreatureGenome : ScriptableObject
 
         mod = Random.Range(_maxMutationAmount, -_maxMutationAmount);
         newGenes._reproductioncooldown += mod * 60;
+
+        return newGenes;
     }
 
     /*
@@ -50,10 +52,10 @@ public class CreatureGenome : ScriptableObject
 
     }*/
 
-    public CreatureGenome CalculateChildGenome ()
-    {
+    //public CreatureGenome CalculateChildGenome ()
+    //{
 
-    }
+    //}
 
     public bool IsExtinct()
     {

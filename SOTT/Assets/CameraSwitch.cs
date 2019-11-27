@@ -7,9 +7,14 @@ public class CameraSwitch : MonoBehaviour
     int m_activeCamera = 0; //The index of the active camera in m_Cameras
     public GameObject[] m_Cameras; //All the cameras to cycle through
     public GameObject[] Listeners;
+
+    private bool mouseState = false; 
     
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         m_Cameras = GameObject.FindGameObjectsWithTag("Camera"); //Get All the Cameras 
         Listeners = GameObject.FindGameObjectsWithTag("Listeners");
         
@@ -29,8 +34,38 @@ public class CameraSwitch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        if (Input.GetKeyUp(KeyCode.X))
+        {
+
+            if (mouseState)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
         if (Input.GetButtonDown("CycleCam"))
         {
+            mouseState = !mouseState;
+            if (mouseState)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
             m_Cameras[m_activeCamera].GetComponent<Camera>().enabled = false; //Disable the current camera
             Listeners[m_activeCamera].GetComponent<AudioListener>().enabled = false; //Disable the current camera
             m_activeCamera++;                           //Cycle to the next camera

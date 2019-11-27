@@ -9,6 +9,8 @@ public class Bush : FoodSource
     public float _regrowMax = 30;
     public float _regrowMin = 0;
 
+    public AudioSource Eating;
+
     private float _regrowTime;
 
     private void Start()
@@ -20,6 +22,7 @@ public class Bush : FoodSource
     {
         base.OnEat();
         _berries.SetActive(false);
+        Eating.Play(0);
         _regrowTime = Time.time + Random.Range(_regrowMin, _regrowMax); //Figure out when the berries will grow back
         Debug.Log(gameObject.name + " Will be fully grown at " + _regrowTime);
     }

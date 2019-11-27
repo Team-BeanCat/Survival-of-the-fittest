@@ -17,16 +17,20 @@ public class CameraMovement : MonoBehaviour
 
     void Start()
     {
-        Cursor.visible = HideCursor;
+        //Cursor.visible = HideCursor;
     }
 
     void Update()
     {
         //don't remember how it works, it just does, don't think about it
 
-        rotationX += Input.GetAxis("Mouse X") * cameraSensitivity * Time.deltaTime;
-        rotationY += Input.GetAxis("Mouse Y") * cameraSensitivity * Time.deltaTime;
-        rotationY = Mathf.Clamp(rotationY, -90, 90);
+        if (!Input.GetKey(KeyCode.X)) //stops screen from moving while cursor is being moved
+        {
+            rotationX += Input.GetAxis("Mouse X") * cameraSensitivity * Time.deltaTime;
+            rotationY += Input.GetAxis("Mouse Y") * cameraSensitivity * Time.deltaTime;
+            rotationY = Mathf.Clamp(rotationY, -90, 90);
+        }
+        
 
         transform.localRotation = Quaternion.AngleAxis(rotationX, Vector3.up);
         transform.localRotation *= Quaternion.AngleAxis(rotationY, Vector3.left);

@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 8940885470569657307}
   m_Layer: 10
   m_Name: Animal
-  m_TagString: creature
+  m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -315,6 +315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camControl: {fileID: 0}
+  state: 1
   BillBoard: {fileID: 8913246273509438699}
 --- !u!1 &8748589296993375237
 GameObject:
@@ -501,7 +502,7 @@ RectTransform:
   m_GameObject: {fileID: 8913246273509438699}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.576, z: 0.1}
+  m_LocalScale: {x: 0.25, y: 0.288, z: 0.1}
   m_Children:
   - {fileID: 239403838449708856}
   - {fileID: 4441583015377283086}
@@ -511,7 +512,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 7.5000005}
+  m_AnchoredPosition: {x: 0, y: 3.99}
   m_SizeDelta: {x: 58, y: 18.43}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6910167642177638944
